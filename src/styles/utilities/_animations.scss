@@ -1,0 +1,40 @@
+@keyframes fade-in {
+	0% {
+		opacity: 0;
+	}
+
+	100% {
+		opacity: 1;
+	}
+}
+.anim-fade-in {
+	animation-name: fade-in;
+	animation-duration: 400ms;
+	animation-timing-function: $TRANSITION_EASE;
+	animation-fill-mode: forwards;
+}
+
+@keyframes delete-exit {
+	0% {
+		transform: translateX(0);
+		opacity: 1;
+	}
+
+	80% {
+		transform: translateX(40%);
+		opacity: 0;
+	}
+	100% {
+		transform: translateX(40%);
+		opacity: 0;
+	}
+}
+.anim-delete-exit {
+	transform-origin: right bottom;
+	animation-name: delete-exit;
+	animation-duration: 250ms;
+	animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+	animation-fill-mode: forwards;
+	pointer-events: none;
+	z-index: 999;
+}

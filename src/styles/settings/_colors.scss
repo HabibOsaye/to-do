@@ -1,0 +1,51 @@
+:root {
+	// Base
+
+	--accent: hsl(214, 97%, 43%);
+	--color-text-primary: hsl(0, 0%, 30%);
+	--color-text-secondary: hsl(0, 0%, 45%);
+	--color-text-danger: hsl(354, 97%, 54%);
+	--color-text-white: hsl(0, 0%, 100%);
+
+	--color-icon-primary: hsl(214, 8%, 62%);
+	--color-icon-hover: hsl(214, 9%, 38%);
+
+	--color-bg-primary: hsl(0, 0%, 100%);
+	--color-bg-secondary: hsl(214, 24%, 97%);
+
+	--color-border-primary: hsl(214, 13%, 90%);
+	--color-border-secondary: hsl(214, 13%, 84%);
+
+	--color-box-shadow: hsla(216, 9%, 57%, 0.2);
+
+	--color-state-completed-text: hsl(214, 5%, 70%);
+	--color-state-selected-accent-bg: hsl(214, 97%, 43%);
+
+	--color-state-hover-accent: hsl(214, 97%, 38%);
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--accent: hsl(214, 85%, 35%);
+		--color-text-primary: hsl(0, 0%, 85%);
+		--color-text-secondary: hsl(0, 0%, 74%);
+		--color-text-danger: hsl(354, 97%, 54%);
+		--color-text-white: #ffffff;
+
+		--color-icon-primary: hsl(214, 10%, 45%);
+		--color-icon-hover: hsl(214, 12%, 64%);
+
+		--color-bg-primary: hsl(214, 25%, 15%);
+		--color-bg-secondary: hsla(214, 25%, 13%);
+
+		--color-border-primary: hsla(214, 15%, 25%);
+		--color-border-secondary: hsla(214, 10%, 24%);
+
+		--color-box-shadow: hsla(0, 0%, 0%, 0.2);
+
+		--color-state-completed-primary-text: hsl(214, 5%, 57%);
+		--color-state-selected-primary-bg: hsla(214, 97%, 43%, 0.8);
+
+		--color-state-hover-accent: hsl(214, 97%, 38%);
+	}
+}

@@ -1,0 +1,11 @@
+.visually-hidden {
+	position: absolute;
+	padding: 0;
+	border: 0;
+	height: 1px;
+	width: 1px;
+	outline: none;
+	overflow: hidden;
+	clip: rect(1px 1px 1px 1px);
+	clip: rect(1px, 1px, 1px, 1px);
+}

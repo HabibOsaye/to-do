@@ -1,0 +1,54 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	font-family: inherit;
+}
+
+html {
+	height: 100%;
+}
+
+body {
+	position: relative;
+	font-family: $FALLBACK;
+	// font-family: $DEFAULT;
+	font-size: 1rem;
+	font-weight: normal;
+	color: var(--color-text-primary);
+	background-color: var(--color-bg-primary);
+	-moz-osx-font-smoothing: $FONT_SMOOTHING_MOZ;
+	-webkit-font-smoothing: $FONT_SMOOTHING_WEBKIT;
+	text-rendering: $FONT_SMOOTHING_RENDERING;
+	overflow-x: hidden;
+}
+
+.App {
+	display: flex;
+	flex-direction: column;
+	color: var(--color-text-primary);
+	margin: 24px 0;
+}
+
+.header {
+	display: flex;
+	justify-content: center;
+	padding-top: 8px;
+	padding-right: 20px;
+	padding-bottom: 32px;
+	padding-left: 20px;
+	border-bottom: 1px solid var(--color-border-primary);
+}
+
+.content {
+	display: grid;
+	grid-template-columns: 100%;
+	grid-template-rows: auto;
+	padding: 20px;
+}
+
+@media screen and (min-width: 700px) {
+	.content {
+		padding: 20px 32px;
+	}
+}

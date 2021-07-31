@@ -1,0 +1,213 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	color: var(--color-text-primary);
+	user-select: none;
+	// border: 1px solid orangered;
+	margin-bottom: 24px;
+}
+
+.task-tab__count {
+	color: var(--color-text-primary);
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding-top: 12px;
+	padding-bottom: 12px;
+	padding-left: 4px;
+	text-transform: uppercase;
+	vertical-align: baseline;
+}
+
+.task-list {
+	position: relative;
+	width: 100%;
+	min-height: 48px;
+	border-radius: $BORDER_RADIUS;
+	box-shadow: var(--color-box-shadow) 0 1px 2px;
+}
+
+.task-item {
+	position: relative;
+	display: flex;
+	align-items: center;
+	color: var(--color-text-primary);
+	font-size: 0.875rem;
+	height: 50px;
+	margin-bottom: -1px;
+	padding: 8px 12px;
+	background-color: var(--color-bg-primary);
+	border: 1px solid var(--color-border-primary);
+	box-shadow: rgba(0, 0, 0, 0) 0 0 0 0;
+	overflow: hidden;
+	outline: none;
+	cursor: pointer;
+
+	transition: $TRANSITION_SPEED $TRANSITION_EASE;
+	transition-property: background-color, color, box-shadow, border-radius;
+
+	&:not(.dragging):hover {
+		box-shadow: var(--color-box-shadow) 0 2px 4px;
+		z-index: 1;
+
+		.task-item__options {
+			display: block;
+		}
+		.drag-indicator {
+			opacity: 1;
+		}
+	}
+
+	&:not(.dragging):focus-within {
+		.task-item__options {
+			display: block;
+		}
+	}
+
+	&:first-of-type {
+		border-top-left-radius: $BORDER_RADIUS;
+		border-top-right-radius: $BORDER_RADIUS;
+	}
+	&:last-of-type {
+		border-bottom-left-radius: $BORDER_RADIUS;
+		border-bottom-right-radius: $BORDER_RADIUS;
+	}
+	// &:not(:last-of-type) {
+	// 	border-bottom: 0;
+	// }
+}
+
+.task-item .checkbox {
+	margin-left: 4px;
+	flex-shrink: 0;
+}
+
+.task-item__content {
+	font-size: 1em;
+	color: var(--color-text-primary);
+	min-width: 0;
+	margin-right: 32px;
+	margin-left: 12px;
+	line-height: 1.35;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	flex-grow: 1;
+	pointer-events: none;
+}
+
+.task-item__options {
+	display: none;
+	flex-shrink: 0;
+}
+
+.task-item .drag-indicator {
+	color: var(--color-icon-primary);
+	position: absolute;
+	left: 0;
+	width: 16px;
+	opacity: 0;
+}
+
+.task-item.completed {
+	.task-item__content {
+		color: var(--color-state-completed-text);
+	}
+}
+
+.task-item.drag-over {
+	pointer-events: none;
+}
+
+.task-item.dragging {
+	background-color: var(--color-bg-secondary);
+	border: 1px solid var(--color-border-secondary);
+	z-index: 999;
+
+	* {
+		opacity: 0 !important;
+	}
+
+	&::before {
+		position: absolute;
+		display: block;
+		content: '';
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		background-color: var(--color-bg-secondary);
+		// background-image: url('/src/assets/icons/plus-24.svg');
+		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+DQogIDxwYXRoIGQ9Ik0xMS43NSw0LjVhLjc2Ljc2LDAsMCwxLC43NS43NVYxMWg1Ljc1YS43NS43NSwwLDAsMSwwLDEuNUgxMi41djUuNzVhLjc1Ljc1LDAsMCwxLTEuNSwwVjEyLjVINS4yNWEuNzUuNzUsMCwwLDEsMC0xLjVIMTFWNS4yNUEuNzYuNzYsMCwwLDEsMTEuNzUsNC41WiIgZmlsbD0iIzY3NzE3ZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+DQo8L3N2Zz4NCg==');
+		background-repeat: no-repeat;
+		background-position: center center;
+		background-size: 24px 24px;
+	}
+}
+
+.state-message {
+	display: none;
+	flex-direction: column;
+	align-items: center;
+	padding: 24px 32px;
+	border: 1px solid var(--color-border-primary);
+	border-radius: $BORDER_RADIUS;
+	pointer-events: none;
+	user-select: none;
+
+	h3 {
+		font-size: 0.75rem;
+		color: var(--color-text-secondary);
+	}
+
+	img {
+		width: 32px;
+		height: 100%;
+		margin-bottom: 18px;
+	}
+}
+
+.state-message.active {
+	display: flex;
+}
+
+.task-item-drag-image {
+	position: absolute;
+	display: flex;
+	align-items: center;
+	left: -999vw;
+	height: 48px;
+	width: 200px;
+	padding: 4px;
+	background-color: var(--color-bg-primary);
+	border: 1px solid var(--color-border-primary);
+	border-radius: $BORDER_RADIUS;
+	box-shadow: var(--color-box-shadow) 0 1px 4px;
+	transform: translate(0%, -50%) scale(0.5);
+	transform-origin: left top;
+	opacity: 0;
+	overflow: hidden;
+	user-select: none;
+	pointer-events: none;
+	z-index: 999;
+
+	transition: 250ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+	transition-property: opacity, transform;
+
+	.drag-indicator {
+		left: 2px;
+		width: 16px;
+	}
+
+	.content {
+		color: var(--color-text-primary);
+		font-size: 0.875rem;
+		min-width: 0;
+		padding-left: 8px;
+		padding-right: 12px;
+		line-height: 1.35;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+}
