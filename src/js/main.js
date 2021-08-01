@@ -30,7 +30,7 @@ const initialize = () => {
 	taskForm.addEventListener('submit', function (e) {
 		e.preventDefault()
 		let content = taskFormInput.value
-		// taskFormInput.value === '' ? getFillerText() : taskFormInput.value
+		// let content = taskFormInput.value === '' ? getFillerText() : taskFormInput.value
 		if (content.toString().trim() == '') return
 		taskFormInput.value = ''
 
@@ -97,11 +97,12 @@ const initialize = () => {
 
 	function handleClick(e) {
 		e.stopPropagation()
-		let task
 		const t = e.target
 		const taskElement = e.currentTarget
-		const deleteButton = taskElement.querySelector('[data-task-delete]')
 		const taskId = taskElement.dataset.taskId
+		const deleteButton = taskElement.querySelector('[data-task-delete]')
+		const timeDuration = 250
+		let task
 
 		// Complete
 		if (t.matches('[data-task-checkbox]')) {
@@ -110,6 +111,7 @@ const initialize = () => {
 
 			task.completed = t.checked
 			taskElement.classList.toggle('completed', t.checked)
+
 			moveTask(taskElement, t.checked)
 			updateListCount()
 			saveState()
@@ -119,14 +121,15 @@ const initialize = () => {
 		if (t === deleteButton || t.closest('[data-task-delete]')) {
 			task = findTask(taskId)
 			if (task == null) return
+			const offsetHeight = taskElement.offsetHeight
 			listData.splice(listData.indexOf(task), 1)
-			saveState()
 
 			// Animate exit
 			taskElement.classList.add('anim-delete-exit')
 			const nextSibling = taskElement.nextElementSibling
-			if (nextSibling && nextSibling.matches('.task-item'))
-				nextSibling.style = 'margin-top: -50px; transition-property: margin;'
+			if (nextSibling && nextSibling.matches('.task-item')) {
+				nextSibling.style = `margin-top: -${offsetHeight}px; transition-property: margin;`
+			}
 
 			setTimeout(() => {
 				taskElement.remove()
@@ -134,8 +137,9 @@ const initialize = () => {
 
 				// Remove all listeners from taskElement
 				Bind.unbindAll(taskElement, taskElementEvents)
+				saveState()
 				updateListCount()
-			}, 250)
+			}, timeDuration)
 		}
 	}
 
