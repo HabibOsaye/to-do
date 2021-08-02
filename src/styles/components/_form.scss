@@ -3,13 +3,12 @@ form {
 	width: 100%;
 	max-width: 640px;
 	border-radius: $BORDER_RADIUS;
-	// border: 1px solid red;
 	box-shadow: var(--color-box-shadow) 0 1px 2px;
 
 	input {
 		display: block !important;
-		font-size: 0.95rem;
-		color: var(--color-text-primary);
+		font-size: 0.875rem;
+		color: var(--color-text-secondary);
 		height: 40px;
 		padding: 8px 12px;
 		background-color: var(--color-bg-primary);
