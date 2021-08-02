@@ -2,7 +2,44 @@
 import * as Bind from './utils/bind.js'
 const LOCAL_STORAGE_KEY = '__TODO_APP__'
 let listData = []
-const temp = []
+const temp = [
+	{
+		id: 1627919959233,
+		content: 'Get an overview of React Js',
+		completed: true,
+		order: 5,
+	},
+	{
+		id: 1627927102427,
+		content: 'Get laundry done',
+		completed: true,
+		order: 4,
+	},
+	{
+		id: 1627919016236,
+		content: 'Take a 30min walk across town',
+		completed: false,
+		order: 3,
+	},
+	{
+		id: 1627919152336,
+		content: 'Pick up chilies on your way back from town',
+		completed: false,
+		order: 2,
+	},
+	{
+		id: 1627926978591,
+		content: 'Catch up with French lessons',
+		completed: false,
+		order: 1,
+	},
+	{
+		id: 1627919959240,
+		content: 'Get a new pc work station',
+		completed: false,
+		order: 0,
+	},
+]
 
 const initialize = () => {
 	const App = document.body.querySelector('.App')
@@ -66,25 +103,25 @@ const initialize = () => {
 
 	const loadData = () => {
 		const localStorageData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
-		if (!localStorageData) return
-		listData = localStorageData
+		if (localStorageData == null) return
+		listData = [...localStorageData]
 		listData.forEach(renderElement)
 	}
 
 	const saveState = () => {
 		const taskElements = [...App.querySelectorAll('.task-item')]
 
-		for (let i = 0; i < taskElements.length; i++) {
-			const id = taskElements[i].dataset.taskId
+		for (let i = taskElements.length - 1; i >= 0; i--) {
+			const id = parseInt(taskElements[i].dataset.taskId)
 			const task = findTask(id)
 			if (task) task.order = i
+			console.log(task)
 		}
 
 		listData.sort((a, b) => b.order - a.order)
+
 		const listDataString = JSON.stringify(listData)
 		localStorage.setItem(LOCAL_STORAGE_KEY, listDataString)
-
-		console.log(listDataString)
 	}
 
 	const findTask = (id) => {
@@ -92,14 +129,14 @@ const initialize = () => {
 	}
 
 	const uniqueId = () => {
-		return new Date().valueOf().toString()
+		return new Date().valueOf()
 	}
 
 	function handleClick(e) {
 		e.stopPropagation()
 		const t = e.target
 		const taskElement = e.currentTarget
-		const taskId = taskElement.dataset.taskId
+		const taskId = parseInt(taskElement.dataset.taskId)
 		const deleteButton = taskElement.querySelector('[data-task-delete]')
 		const timeDuration = 250
 		let task
@@ -119,14 +156,15 @@ const initialize = () => {
 
 		// Delete
 		if (t === deleteButton || t.closest('[data-task-delete]')) {
+			const offsetHeight = taskElement.offsetHeight
+			const nextSibling = taskElement.nextElementSibling
+
 			task = findTask(taskId)
 			if (task == null) return
-			const offsetHeight = taskElement.offsetHeight
 			listData.splice(listData.indexOf(task), 1)
 
 			// Animate exit
 			taskElement.classList.add('anim-delete-exit')
-			const nextSibling = taskElement.nextElementSibling
 			if (nextSibling && nextSibling.matches('.task-item')) {
 				nextSibling.style = `margin-top: -${offsetHeight}px; transition-property: margin;`
 			}
@@ -161,19 +199,28 @@ const initialize = () => {
 	function handleDragEnd(e) {
 		// console.log('dragend')
 		const t = e.target
-		const checkbox = t.querySelector('[type="checkbox"]')
+		const taskId = parseInt(t.dataset.taskId)
+		const checkbox = t.querySelector('[data-task-checkbox]')
 
 		const dragOver = [...App.querySelectorAll('.drag-over')]
 		dragOver.forEach((n) => n.classList.remove('drag-over'))
 
 		// Switch state according to task group
 		if (t.closest('[data-task="to-do"]') && t.matches('.task-item.completed')) {
-			checkbox.click()
+			const task = findTask(taskId)
+			if (task == null) return
+			checkbox.checked = false
+			task.completed = false
+			t.classList.remove('completed')
 		} else if (
 			t.closest('[data-task="done"]') &&
 			t.matches('.task-item:not(.completed)')
 		) {
-			checkbox.click()
+			const task = findTask(taskId)
+			if (task == null) return
+			checkbox.checked = true
+			task.completed = true
+			t.classList.add('completed')
 		}
 
 		t.classList.remove('dragging')
@@ -224,20 +271,20 @@ const initialize = () => {
 	}
 
 	const moveTask = (taskElement, boolean) => {
-		const isDragging = taskElement.matches('.task-item.dragging')
+		// const isDragging = taskElement.matches('.task-item.dragging')
 
 		if (boolean) {
-			if (taskElement.closest('[data-task="done"]') && isDragging) {
-				// console.log('converted @doneList')
-			} else {
-				doneList.prepend(taskElement)
-			}
+			// if (taskElement.closest('[data-task="done"]') && isDragging) {
+			// 	// console.log('converted @doneList')
+			// } else {
+			doneList.prepend(taskElement)
+			// }
 		} else {
-			if (taskElement.closest('[data-task="to-do"]') && isDragging) {
-				// console.log('converted @toDoList')
-			} else {
-				toDoList.prepend(taskElement)
-			}
+			// if (taskElement.closest('[data-task="to-do"]') && isDragging) {
+			// 	// console.log('converted @toDoList')
+			// } else {
+			toDoList.prepend(taskElement)
+			// }
 		}
 	}
 
@@ -275,7 +322,10 @@ const initialize = () => {
 		dragImage.removeAttribute('style')
 	}
 
-	if (!localStorage.getItem(LOCAL_STORAGE_KEY)) temp.forEach(renderElement)
+	if (localStorage.getItem(LOCAL_STORAGE_KEY) == null) {
+		temp.forEach(renderElement)
+		listData = [...temp]
+	}
 
 	loadData()
 	updateListCount()
