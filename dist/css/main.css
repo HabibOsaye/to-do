@@ -1162,7 +1162,7 @@ form .btn {
 }
 
 .task-item-drag-image {
-  position: absolute;
+  position: fixed;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -1170,7 +1170,7 @@ form .btn {
       -ms-flex-align: center;
           align-items: center;
   left: -999vw;
-  height: 48px;
+  height: 50px;
   width: 200px;
   padding: 4px;
   background-color: var(--color-bg-primary);
@@ -1199,20 +1199,23 @@ form .btn {
 }
 
 .task-item-drag-image .drag-indicator {
-  left: 2px;
   width: 16px;
+  left: 2px;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  margin-right: 4px;
 }
 
-.task-item-drag-image .content {
+.task-item-drag-image .drag-image__content {
+  display: inline-block;
   color: var(--color-text-primary);
   font-size: 0.875rem;
   min-width: 0;
-  padding-left: 8px;
-  padding-right: 12px;
-  line-height: 1.35;
-  white-space: nowrap;
+  margin-right: 8px;
   overflow: hidden;
+  white-space: nowrap;
   text-overflow: ellipsis;
+  line-height: 1.5;
 }
 
 .btn {

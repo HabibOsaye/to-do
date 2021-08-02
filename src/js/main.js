@@ -115,7 +115,6 @@ const initialize = () => {
 			const id = parseInt(taskElements[i].dataset.taskId)
 			const task = findTask(id)
 			if (task) task.order = i
-			console.log(task)
 		}
 
 		listData.sort((a, b) => b.order - a.order)
@@ -188,7 +187,7 @@ const initialize = () => {
 
 		e.dataTransfer.setDragImage(new Image(), 0, 0)
 		const content = t.querySelector('[data-task-content]').textContent
-		dragImage.querySelector('.content').textContent = content
+		dragImage.querySelector('.drag-image__content').textContent = content
 	}
 
 	function handleDrag(e) {
