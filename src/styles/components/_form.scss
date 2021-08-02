@@ -2,6 +2,9 @@ form {
 	display: flex;
 	width: 100%;
 	max-width: 640px;
+	border-radius: $BORDER_RADIUS;
+	// border: 1px solid red;
+	box-shadow: var(--color-box-shadow) 0 1px 2px;
 
 	input {
 		display: block !important;
@@ -15,14 +18,13 @@ form {
 		border-radius: $BORDER_RADIUS;
 		border-top-right-radius: 0;
 		border-bottom-right-radius: 0;
-		box-shadow: var(--color-box-shadow) 0 0px 0px;
 		line-height: 1.5rem;
 		outline: none;
 		appearance: none;
 		flex-grow: 1;
 
 		transition: $TRANSITION_SPEED $TRANSITION_EASE;
-		transition-property: background-color, box-shadow;
+		transition-property: background-color;
 
 		&:hover {
 			background-color: var(--color-bg-secondary);
@@ -30,7 +32,6 @@ form {
 
 		&:focus-visible {
 			background-color: var(--color-bg-secondary);
-			box-shadow: var(--color-box-shadow) 0 1px 2px;
 		}
 
 		&::placeholder {

@@ -500,6 +500,38 @@ template {
   display: none;
 }
 
+@font-face {
+  font-family: 'Inter';
+  src: url("Inter-Bold.woff2") format("woff2"), url("Inter-Bold.woff") format("woff");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url("Inter-SemiBold.woff2") format("woff2"), url("Inter-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url("Inter-Medium.woff2") format("woff2"), url("Inter-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url("Inter-Regular.woff2") format("woff2"), url("Inter-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --accent: hsl(214, 97%, 43%);
   --color-text-primary: hsl(0, 0%, 30%);
@@ -639,14 +671,13 @@ template {
 }
 
 html {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, Segoe UI, "Helvetica Neue", "Helvetica", "Roboto", Arial, sans-serif;
+  font-size: 1rem;
   height: 100%;
 }
 
 body {
   position: relative;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, "Helvetica Neue", "Helvetica", "Roboto", Arial, sans-serif;
-  font-size: 1rem;
-  font-weight: normal;
   color: var(--color-text-primary);
   background-color: var(--color-bg-primary);
   -moz-osx-font-smoothing: grayscale;
@@ -682,12 +713,16 @@ body {
 }
 
 .content {
-  display: -ms-grid;
-  display: grid;
-  -ms-grid-columns: 100%;
-      grid-template-columns: 100%;
-  -ms-grid-rows: auto;
-      grid-template-rows: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   padding: 20px;
 }
 
@@ -830,6 +865,9 @@ form {
   display: flex;
   width: 100%;
   max-width: 640px;
+  border-radius: 8px;
+  -webkit-box-shadow: var(--color-box-shadow) 0 1px 2px;
+          box-shadow: var(--color-box-shadow) 0 1px 2px;
 }
 
 form input {
@@ -844,8 +882,6 @@ form input {
   border-radius: 8px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  -webkit-box-shadow: var(--color-box-shadow) 0 0px 0px;
-          box-shadow: var(--color-box-shadow) 0 0px 0px;
   line-height: 1.5rem;
   outline: none;
   -webkit-appearance: none;
@@ -856,10 +892,8 @@ form input {
           flex-grow: 1;
   -webkit-transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: 0.2s cubic-bezier(0.19, 1, 0.22, 1);
-  -webkit-transition-property: background-color, -webkit-box-shadow;
-  transition-property: background-color, -webkit-box-shadow;
-  transition-property: background-color, box-shadow;
-  transition-property: background-color, box-shadow, -webkit-box-shadow;
+  -webkit-transition-property: background-color;
+  transition-property: background-color;
 }
 
 form input:hover {
@@ -868,8 +902,6 @@ form input:hover {
 
 form input:focus-visible {
   background-color: var(--color-bg-secondary);
-  -webkit-box-shadow: var(--color-box-shadow) 0 1px 2px;
-          box-shadow: var(--color-box-shadow) 0 1px 2px;
 }
 
 form input::-webkit-input-placeholder {
@@ -903,15 +935,14 @@ form .btn {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch;
+  width: 100%;
   color: var(--color-text-primary);
+  max-width: 640px;
+  margin-bottom: 24px;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none;
-  margin-bottom: 24px;
 }
 
 .task-tab__count {
@@ -1068,6 +1099,8 @@ form .btn {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
   padding: 24px 32px;
   border: 1px solid var(--color-border-primary);
   border-radius: 8px;
@@ -1169,6 +1202,7 @@ form .btn {
   border-radius: 8px;
   -webkit-box-shadow: rgba(0, 0, 0, 0) 0 0 0 0;
           box-shadow: rgba(0, 0, 0, 0) 0 0 0 0;
+  line-height: 20px;
   outline: none;
   cursor: pointer;
   -webkit-user-select: none;
@@ -1208,11 +1242,6 @@ form .btn {
   background-color: var(--color-bg-secondary);
 }
 
-.btn-outline:focus-visible {
-  -webkit-box-shadow: var(--color-box-shadow) 0 1px 2px;
-          box-shadow: var(--color-box-shadow) 0 1px 2px;
-}
-
 .btn-tertiary {
   background-color: rgba(0, 0, 0, 0);
   border: none;
@@ -1247,7 +1276,7 @@ form .btn {
 }
 
 .btn-md {
-  height: 32px;
   font-size: 0.875rem;
+  height: 32px;
 }
 /*# sourceMappingURL=main.css.map */

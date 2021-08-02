@@ -6,15 +6,13 @@
 }
 
 html {
+	font-family: $FONT_FAMILY;
+	font-size: 1rem;
 	height: 100%;
 }
 
 body {
 	position: relative;
-	font-family: $FALLBACK;
-	// font-family: $DEFAULT;
-	font-size: 1rem;
-	font-weight: normal;
 	color: var(--color-text-primary);
 	background-color: var(--color-bg-primary);
 	-moz-osx-font-smoothing: $FONT_SMOOTHING_MOZ;
@@ -41,9 +39,9 @@ body {
 }
 
 .content {
-	display: grid;
-	grid-template-columns: 100%;
-	grid-template-rows: auto;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 	padding: 20px;
 }
 

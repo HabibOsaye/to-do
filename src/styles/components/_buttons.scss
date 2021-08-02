@@ -11,6 +11,7 @@
 	border: 1px solid hsla(0, 0%, 0%, 0);
 	border-radius: $BORDER_RADIUS;
 	box-shadow: hsla(0, 0%, 0%, 0) 0 0 0 0;
+	line-height: 20px;
 	outline: none;
 	cursor: pointer;
 	user-select: none;
@@ -39,10 +40,6 @@
 	&:hover,
 	&:focus-visible {
 		background-color: var(--color-bg-secondary);
-	}
-
-	&:focus-visible {
-		box-shadow: var(--color-box-shadow) 0 1px 2px;
 	}
 }
 
@@ -88,6 +85,6 @@
 }
 
 .btn-md {
-	height: 32px;
 	font-size: 0.875rem;
+	height: 32px;
 }

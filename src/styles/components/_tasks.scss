@@ -1,11 +1,11 @@
 .container {
 	display: flex;
 	flex-direction: column;
-	align-items: stretch;
+	width: 100%;
 	color: var(--color-text-primary);
-	user-select: none;
-	// border: 1px solid orangered;
+	max-width: 640px;
 	margin-bottom: 24px;
+	user-select: none;
 }
 
 .task-tab__count {
@@ -72,9 +72,6 @@
 		border-bottom-left-radius: $BORDER_RADIUS;
 		border-bottom-right-radius: $BORDER_RADIUS;
 	}
-	// &:not(:last-of-type) {
-	// 	border-bottom: 0;
-	// }
 }
 
 .task-item .checkbox {
@@ -137,7 +134,6 @@
 		bottom: 0;
 		left: 0;
 		background-color: var(--color-bg-secondary);
-		// background-image: url('/src/assets/icons/plus-24.svg');
 		background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+DQogIDxwYXRoIGQ9Ik0xMS43NSw0LjVhLjc2Ljc2LDAsMCwxLC43NS43NVYxMWg1Ljc1YS43NS43NSwwLDAsMSwwLDEuNUgxMi41djUuNzVhLjc1Ljc1LDAsMCwxLTEuNSwwVjEyLjVINS4yNWEuNzUuNzUsMCwwLDEsMC0xLjVIMTFWNS4yNUEuNzYuNzYsMCwwLDEsMTEuNzUsNC41WiIgZmlsbD0iIzY3NzE3ZSIgZmlsbC1ydWxlPSJldmVub2RkIi8+DQo8L3N2Zz4NCg==');
 		background-repeat: no-repeat;
 		background-position: center center;
@@ -149,6 +145,8 @@
 	display: none;
 	flex-direction: column;
 	align-items: center;
+	color: var(--color-text-secondary);
+	font-size: 0.85rem;
 	padding: 24px 32px;
 	border: 1px solid var(--color-border-primary);
 	border-radius: $BORDER_RADIUS;
