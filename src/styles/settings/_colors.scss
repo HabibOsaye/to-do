@@ -25,29 +25,7 @@
 	--color-state-hover-accent: hsl(214, 97%, 38%);
 }
 
-@media (prefers-color-scheme: dark) {
-	:root {
-		--accent: hsl(214, 85%, 35%);
-		--color-text-primary: hsl(0, 0%, 85%);
-		--color-text-secondary: hsl(0, 0%, 74%);
-		--color-text-danger: hsl(354, 97%, 54%);
-		--color-text-white: #ffffff;
-
-		--color-icon-primary: hsl(214, 10%, 45%);
-		--color-icon-hover: hsl(214, 12%, 64%);
-
-		--color-bg-primary: hsl(214, 25%, 15%);
-		--color-bg-secondary: hsla(214, 20%, 13%);
-		--color-bg-tertiary: hsl(214, 25%, 20%);
-
-		--color-border-primary: hsla(214, 15%, 25%);
-		--color-border-secondary: hsla(214, 10%, 24%);
-
-		--color-box-shadow: hsla(0, 0%, 0%, 0.2);
-
-		--color-state-completed-primary-text: hsl(214, 5%, 57%);
-		--color-state-selected-primary-bg: hsla(214, 97%, 43%, 0.8);
-
-		--color-state-hover-accent: hsl(214, 97%, 38%);
-	}
-}
+// @media (prefers-color-scheme: dark) {
+// 	:root {
+// 	}
+// }

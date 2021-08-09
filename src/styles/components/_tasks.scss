@@ -20,20 +20,9 @@
 	text-transform: uppercase;
 
 	span {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
 		font-weight: 400;
 		color: var(--color-text-secondary);
-		height: 20px;
-		min-width: 20px;
-		margin-top: -2px;
 		margin-left: 8px;
-		padding: 2px 6px;
-		background-color: var(--color-bg-tertiary);
-		border-radius: 999px;
-		vertical-align: baseline;
-		// border: 1px solid red;
 		line-height: 1;
 	}
 }
@@ -49,22 +38,18 @@
 .task-item {
 	position: relative;
 	display: flex;
-	align-items: center;
 	color: var(--color-text-primary);
 	font-size: 0.8125rem;
 	font-weight: 400;
-	height: 50px;
+	min-height: 48px;
 	margin-bottom: -1px;
 	padding: 8px 12px;
 	background-color: var(--color-bg-primary);
 	border: 1px solid var(--color-border-primary);
-	box-shadow: rgba(0, 0, 0, 0) 0 0 0 0;
 	overflow: hidden;
-	outline: none;
-	cursor: pointer;
 
 	transition: $TRANSITION_SPEED $TRANSITION_EASE;
-	transition-property: background-color, color, box-shadow, border-radius;
+	transition-property: color, background-color, border-radius;
 
 	&:not(.dragging):hover {
 		box-shadow: var(--color-box-shadow) 0 2px 4px;
@@ -94,41 +79,65 @@
 	}
 }
 
+.task-item .drag-indicator {
+	color: var(--color-icon-primary);
+	position: absolute;
+	left: 0;
+	top: 2px;
+	width: 16px;
+	opacity: 0;
+}
+
 .task-item .checkbox {
 	margin-left: 4px;
 	flex-shrink: 0;
+}
+
+.task-item__group {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	flex-grow: 1;
+	min-width: 0;
+	margin-right: 32px;
+	margin-left: 12px;
 }
 
 .task-item__content {
 	font-size: 1em;
 	color: var(--color-text-primary);
 	min-width: 0;
-	margin-right: 32px;
-	margin-left: 12px;
-	line-height: 1.35;
+	line-height: 1.5;
+}
+
+.task-item__date {
+	color: var(--accent);
+	font-size: 0.9em;
+	font-weight: 500;
+	min-width: 0;
+	margin-top: 8px;
+	line-height: 1;
 	white-space: nowrap;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	flex-grow: 1;
-	pointer-events: none;
+	opacity: 0.75;
 }
 
 .task-item__options {
-	display: none;
-	flex-shrink: 0;
-}
-
-.task-item .drag-indicator {
-	color: var(--color-icon-primary);
 	position: absolute;
-	left: 0;
-	width: 16px;
-	opacity: 0;
+	display: none;
+	top: 10px;
+	right: 12px;
+	flex-shrink: 0;
+	border-radius: $BORDER_RADIUS;
+	background-color: var(--color-bg-primary);
+	z-index: 10;
 }
 
 .task-item.completed {
 	.task-item__content {
 		color: var(--color-state-completed-text);
+	}
+	.task-item__date {
+		opacity: 0.5;
 	}
 }
 
