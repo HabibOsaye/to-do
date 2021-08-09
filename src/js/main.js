@@ -84,8 +84,7 @@ const init = () => {
 	taskForm.addEventListener('submit', function (e) {
 		e.preventDefault()
 		// let content = taskFormInput.value
-		let content =
-			taskFormInput.value === '' ? fillerText() : taskFormInput.value
+		let content = taskFormInput.value === '' ? fillerText() : taskFormInput.value
 		if (content.toString().trim() == '') return
 		taskFormInput.value = ''
 
@@ -108,8 +107,7 @@ const init = () => {
 		taskElement.dataset.taskId = id
 		select(taskElement, '.checkbox label').htmlFor = id
 		select(taskElement, '[data-task-content]').textContent = content
-		select(taskElement, '[data-task-date]').textContent =
-			formatDate(dateCreated)
+		select(taskElement, '[data-task-date]').textContent = formatDate(dateCreated)
 		const checkbox = select(taskElement, '[data-task-checkbox]')
 		checkbox.id = id
 		checkbox.checked = completed
@@ -213,11 +211,19 @@ const init = () => {
 	function handleDragStart(e) {
 		// console.log('dragstart')
 		const t = e.target
+		const taskList = t.closest('[data-task-list]')
 		t.classList.add('dragging')
 
+		// dragImage
 		e.dataTransfer.setDragImage(new Image(), 0, 0)
 		const content = select(t, '[data-task-content]').textContent
 		select(dragImage, '.drag-image__content').textContent = content
+
+		// Marker
+		const marker = document.createElement('span')
+		marker.className = 'marker'
+		taskList.insertBefore(marker, t)
+		// console.log(marker)
 	}
 
 	function handleDrag(e) {
@@ -231,20 +237,28 @@ const init = () => {
 		const taskId = parseInt(t.dataset.taskId)
 		const checkbox = select(t, '[data-task-checkbox]')
 
-		const dragOver = selectAll(App, '.drag-over')
-		dragOver.forEach((n) => n.classList.remove('drag-over'))
+		// Marker
+		const marker = select(App, '.marker')
+		if (marker) {
+			const taskList = marker.closest('[data-task-list]')
+			if (taskList.lastElementChild === marker) {
+				taskList.appendChild(t)
+				console.log('mark appendChild()')
+			} else {
+				taskList.insertBefore(t, marker)
+				console.log('mark insertBefore()')
+			}
+			marker.remove()
+		}
 
-		// Completed state according to placed task group
+		// Update completed state
 		if (t.closest('[data-task="to-do"]') && t.matches('.task-item.completed')) {
 			const task = findTask(taskId)
 			if (task == null) return
 			checkbox.checked = false
 			task.completed = false
 			t.classList.remove('completed')
-		} else if (
-			t.closest('[data-task="done"]') &&
-			t.matches('.task-item:not(.completed)')
-		) {
+		} else if (t.closest('[data-task="done"]') && t.matches('.task-item:not(.completed)')) {
 			const task = findTask(taskId)
 			if (task == null) return
 			checkbox.checked = true
@@ -258,73 +272,52 @@ const init = () => {
 		saveState()
 	}
 
-	listContainers.forEach((listContainer) => {
-		listContainer.addEventListener('dragover', (e) => {
+	listContainers.forEach((container) => {
+		container.addEventListener('dragover', (e) => {
 			// console.log('dragover')
 			e.preventDefault()
-			const t = e.target
+			let t = e.target
+			const taskElement = select(App, '.task-item.dragging')
 
-			const activeDragElement = select(App, '.task-item.dragging')
-			const afterElement = getDragAfterElement(listContainer, e.clientY)
+			// Marker placement
+			const marker = select(App, '.marker')
+			if (t.closest('.task-item')) {
+				t = e.target.closest('.task-item')
 
-			if (afterElement == null) {
-				listContainer.appendChild(activeDragElement)
-			} else {
-				afterElement.classList.add('drag-over')
-				listContainer.insertBefore(activeDragElement, afterElement)
+				const { top, height } = t.getBoundingClientRect()
+				const { clientY: y } = e
+
+				const offset = y - top - height / 2
+				const onDragZone = offset > height * -0.25 && offset < 0
+
+				if (marker) {
+					if (onDragZone) {
+						container.insertBefore(marker, t)
+					} else if (offset >= height * 0.25 && t === container.lastElementChild) {
+						container.appendChild(marker)
+					}
+				}
+				// taskElement placement
+			} else if (selectAll(container, '.task-item').length === 0) {
+				// if (marker) marker.remove()
+				container.appendChild(taskElement)
 			}
 			updateListCount()
 		})
 	})
 
-	const getDragAfterElement = (container, y) => {
-		const siblings = selectAll(container, '.task-item:not(.dragging)')
-		return siblings.reduce(
-			(closest, child) => {
-				const { top, height } = child.getBoundingClientRect()
-				const offset = y - top - height / 2
-
-				if (offset < 0 && offset > closest.offset) {
-					return {
-						offset: offset,
-						element: child,
-					}
-				} else {
-					return closest
-				}
-			},
-			{ offset: Number.NEGATIVE_INFINITY, element: null }
-		).element
-	}
-
 	const moveTask = (taskElement, boolean) => {
-		// const isDragging = taskElement.matches('.task-item.dragging')
-
-		if (boolean) {
-			// if (taskElement.closest('[data-task="done"]') && isDragging) {
-			// 	// console.log('converted @doneList')
-			// } else {
-			doneList.prepend(taskElement)
-			// }
-		} else {
-			// if (taskElement.closest('[data-task="to-do"]') && isDragging) {
-			// 	// console.log('converted @toDoList')
-			// } else {
-			toDoList.prepend(taskElement)
-			// }
-		}
+		boolean ? doneList.prepend(taskElement) : toDoList.prepend(taskElement)
 	}
 
 	const updateListCount = () => {
-		const containers = [...App.querySelectorAll('[data-task]')]
+		// const containers = [...App.querySelectorAll('[data-task]')]
+		const containers = selectAll(App, '[data-task]')
 
 		containers.forEach((container) => {
-			const count = select(container, '[data-task-list]').childElementCount - 1
+			const count = selectAll(container, '.task-item').length
 			select(container, '[data-counter]').textContent = count
-			select(container, '.state-message').classList.toggle(
-				'active',
-				count === 0
-			)
+			select(container, '.state-message').classList.toggle('active', count === 0)
 		})
 
 		document.title = `To Do (${select(App, '[data-counter]').textContent})`
@@ -347,6 +340,7 @@ const init = () => {
 	}
 
 	if (localStorage.getItem(LOCAL_STORAGE_KEY) == null) {
+		temp.forEach(renderElement)
 		listData = [...temp]
 	}
 
