@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>To Do</title>
   <link rel="shortcut icon" href="favicon.png" type="image/png">
-  <script type="module" src="../src/js/main.js"></script>
+  <script src="./src/js/main.js" defer></script>
 </head>
 
 <body>
@@ -23,7 +23,7 @@
         <span class="task-tab__count">To do <span data-counter></span></span>
         <ul data-task-list class="task-list">
           <div class="state-message">
-            <img src="../src/assets/images/to-do-blank.png" alt="" />
+            <img src="./src/assets/images/to-do-blank.png" alt="" />
             <span>No Tasks. Make something happen from planning ahead.</span>
           </div>
         </ul>
@@ -32,7 +32,7 @@
         <span class="task-tab__count">Done <span data-counter></span></span>
         <ul data-task-list class="task-list">
           <div class="state-message">
-            <img src="../src/assets/images/done-blank.png" alt="" />
+            <img src="./src/assets/images/done-blank.png" alt="" />
             <span>Tasks marked complete are moved here.</span>
           </div>
         </ul>
@@ -60,7 +60,10 @@
           </svg>
         </div>
       </div>
-      <div data-task-content class="task-item__content"></div>
+      <div class="task-item__group">
+        <div data-task-content class="task-item__content"></div>
+        <div data-task-date class="task-item__date"></div>
+      </div>
       <div class="task-item__options">
         <button data-task-delete class="btn btn-tertiary btn-danger btn-w-icon">
           <svg class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" fill="none"
