@@ -62,7 +62,8 @@
 		color: var(--color-icon-primary);
 	}
 
-	&:hover {
+	&:hover,
+	&:focus-visible {
 		.icon {
 			color: var(--color-icon-hover);
 		}

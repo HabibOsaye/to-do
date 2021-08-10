@@ -6,24 +6,48 @@
 	max-width: 640px;
 	margin-bottom: 24px;
 	user-select: none;
+
+	&.collapse {
+		.task-header {
+			border-bottom: 1px solid red;
+		}
+
+		> :not(.task-header) {
+			display: none !important;
+		}
+	}
 }
 
-.task-tab__count {
+.task-header {
 	display: flex;
 	align-items: center;
 	color: var(--color-text-primary);
 	font-size: 0.75rem;
 	font-weight: 700;
-	padding-top: 12px;
 	padding-bottom: 16px;
 	padding-left: 4px;
 	text-transform: uppercase;
 
-	span {
+	[data-counter] {
 		font-weight: 400;
 		color: var(--color-text-secondary);
 		margin-left: 8px;
 		line-height: 1;
+	}
+
+	.toggle-view {
+		color: var(--color-text-primary);
+		font-size: 0.75rem;
+		background: none;
+		border: none;
+		outline: none;
+		padding: 4px;
+
+		&:hover,
+		&:focus-visible {
+			color: var(--accent);
+			outline: none;
+		}
 	}
 }
 
