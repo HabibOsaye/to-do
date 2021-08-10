@@ -9,7 +9,7 @@
 
 	&.collapse {
 		.task-header {
-			border-bottom: 1px solid red;
+			border-bottom: 1px solid var(--color-border-primary);
 		}
 
 		> :not(.task-header) {
@@ -21,9 +21,11 @@
 .task-header {
 	display: flex;
 	align-items: center;
+	justify-content: space-between;
 	color: var(--color-text-primary);
 	font-size: 0.75rem;
 	font-weight: 700;
+	padding-right: 2px;
 	padding-bottom: 16px;
 	padding-left: 4px;
 	text-transform: uppercase;
@@ -42,6 +44,7 @@
 		border: none;
 		outline: none;
 		padding: 4px;
+		cursor: pointer;
 
 		&:hover,
 		&:focus-visible {
