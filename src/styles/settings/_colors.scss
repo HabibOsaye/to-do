@@ -1,31 +1,26 @@
 :root {
 	// Base
 
-	--accent: hsl(214, 97%, 43%);
-	--color-text-primary: hsl(0, 0%, 30%);
-	--color-text-secondary: hsl(0, 0%, 45%);
-	--color-text-danger: hsl(354, 97%, 54%);
-	--color-text-white: hsl(0, 0%, 100%);
+	--accent: #1981c1;
+	--color-text-primary: #000000d6;
+	--color-text-secondary: #000000b3;
+	--color-text-danger: #ee382b;
+	--color-text-white: #ffffff;
 
-	--color-icon-primary: hsl(214, 8%, 62%);
-	--color-icon-hover: hsl(214, 9%, 38%);
+	--color-icon-primary: #969da6;
+	--color-icon-hover: #666666;
 
-	--color-bg-primary: hsl(0, 0%, 100%);
-	--color-bg-secondary: hsl(214, 24%, 97%);
-	--color-bg-tertiary: hsl(214, 24%, 95%);
+	--color-bg-primary: #ffffff;
+	--color-bg-secondary: #f6f7f9;
+	--color-bg-tertiary: #eff2f5;
 
-	--color-border-primary: hsl(214, 13%, 90%);
-	--color-border-secondary: hsl(214, 13%, 84%);
+	--color-border-primary: #e2e5e9;
+	--color-border-secondary: #d1d5dc;
 
-	--color-box-shadow: hsla(216, 9%, 57%, 0.2);
+	--color-box-shadow: #878f9b33;
 
-	--color-state-completed-text: hsl(214, 5%, 70%);
-	--color-state-selected-accent-bg: hsl(214, 97%, 43%);
-
-	--color-state-hover-accent: hsl(214, 97%, 38%);
+	--color-state-completed-text: #afb2b6;
+	--color-state-selected-accent-bg: var(--accent);
+	--color-state-hover-accent-bg: #0f5eae;
+	--color-state-selected-accent-bg: #2e964b;
 }
-
-// @media (prefers-color-scheme: dark) {
-// 	:root {
-// 	}
-// }

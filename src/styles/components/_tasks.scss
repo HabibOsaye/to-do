@@ -23,7 +23,7 @@
 	align-items: center;
 	justify-content: space-between;
 	color: var(--color-text-primary);
-	font-size: 0.75rem;
+	font-size: 0.8125rem;
 	font-weight: 700;
 	padding-right: 2px;
 	padding-bottom: 16px;
@@ -38,8 +38,9 @@
 	}
 
 	.toggle-view {
-		color: var(--color-text-primary);
-		font-size: 0.75rem;
+		color: var(--accent);
+		// font-size: 0.75rem;
+		font-weight: 600;
 		background: none;
 		border: none;
 		outline: none;
@@ -48,7 +49,7 @@
 
 		&:hover,
 		&:focus-visible {
-			color: var(--accent);
+			color: var(--color-text-primary);
 			outline: none;
 		}
 	}
@@ -58,6 +59,7 @@
 	position: relative;
 	width: 100%;
 	min-height: 48px;
+	// border: 1px solid red;
 }
 
 .task-item {
@@ -84,7 +86,7 @@
 			display: block;
 		}
 		.drag-indicator {
-			opacity: 1;
+			opacity: 0.85;
 		}
 	}
 
@@ -101,17 +103,31 @@
 	&:last-of-type {
 		border-bottom-left-radius: $BORDER_RADIUS;
 		border-bottom-right-radius: $BORDER_RADIUS;
-		// border-bottom: 1px solid var(--color-border-primary);
+	}
+
+	&.completed {
+		.task-item__content {
+			color: var(--color-state-completed-text);
+		}
+		.task-item__date {
+			color: var(--accent);
+		}
+	}
+
+	&.dragging {
+		background-color: hsla(214, 97%, 38%, 0.06);
+		border: 1px solid var(--color-border-secondary);
+		z-index: 1;
 	}
 }
 
 .task-item .drag-indicator {
-	color: var(--color-icon-primary);
 	position: absolute;
 	left: 0;
 	top: 2px;
 	width: 16px;
 	opacity: 0;
+	cursor: grab;
 }
 
 .task-item .checkbox {
@@ -144,7 +160,6 @@
 	margin-top: 8px;
 	line-height: 1;
 	white-space: nowrap;
-	opacity: 0.75;
 }
 
 .task-item__options {
@@ -156,25 +171,6 @@
 	border-radius: $BORDER_RADIUS;
 	background-color: var(--color-bg-primary);
 	z-index: 10;
-}
-
-.task-item.completed {
-	.task-item__content {
-		color: var(--color-state-completed-text);
-	}
-	.task-item__date {
-		opacity: 0.8;
-	}
-}
-
-.task-item.drag-over {
-	pointer-events: none;
-}
-
-.task-item.dragging {
-	background-color: hsla(214, 97%, 38%, 0.05);
-	border: 1px solid var(--color-border-secondary);
-	z-index: 1;
 }
 
 .marker {
@@ -218,7 +214,7 @@
 	user-select: none;
 
 	span {
-		font-size: 0.75rem;
+		font-size: 0.8125rem;
 		color: var(--color-text-secondary);
 		width: 60%;
 		text-align: center;
@@ -262,8 +258,9 @@
 	.drag-indicator {
 		width: 16px;
 		left: 2px;
-		flex-shrink: 0;
 		margin-right: 4px;
+		opacity: 0.85;
+		flex-shrink: 0;
 	}
 
 	.drag-image__content {
