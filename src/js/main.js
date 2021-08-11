@@ -17,14 +17,22 @@ const init = () => {
 	const toDoList = select(App, '[data-task-tab="toDo"] [data-task-list]')
 	const doneList = select(App, '[data-task-tab="done"] [data-task-list]')
 	const taskContainers = selectAll(App, '[data-task-tab]')
-	const listContainers = selectAll(App, '[data-task-list]')
+	// const listContainers = selectAll(App, '[data-task-list]')
 	const dragImage = select(true, '.task-item-drag-image')
 
 	document.addEventListener('keyup', (e) => {
+		// Actuate click on checkboxes
 		e.stopPropagation()
-		// Actuate click on checkbox
 		const t = e.target
 		if (e.code === 'Enter' && t.matches('[type="checkbox"]')) t.click()
+	})
+
+	document.addEventListener('click', (e) => {
+		// Hide open menus
+		const t = e.target
+		if (!t.matches('[data-option="show-menu"]')) {
+			selectAll(true, '.menu__list.show').forEach((n) => n.classList.remove('show'))
+		}
 	})
 
 	const taskElementListeners = [
@@ -54,25 +62,39 @@ const init = () => {
 
 	taskContainers.forEach((container) => {
 		container.addEventListener('click', (e) => {
-			e.stopPropagation()
+			// e.stopPropagation()
 			const t = e.target
+			const option = t.dataset.option
 			const taskTab = container.dataset.taskTab
 			const timeDuration = 250
 			let task
 
-			// Toggle view
-			if (t.matches('.toggle-view')) {
+			// Toggle tab view
+			if (option === 'toggle-view') {
 				container.classList.toggle('collapse')
 				t.textContent = t.textContent === 'Hide' ? 'Show' : 'Hide'
 				__data.config[taskTab].collapsed = !__data.config[taskTab].collapsed
 				saveState()
 			}
 
+			//  Task menu
+			if (option === 'show-menu') {
+				const taskElement = t.closest('.task-item')
+				selectAll(true, '.menu__list.show').forEach((n) => {
+					if (n.closest('.task-item') === taskElement) return
+					n.classList.remove('show')
+				})
+				select(taskElement, '.menu__list').classList.toggle('show')
+			}
+
+			// Edit task
+			if (option === 'edit') {
+			}
+
 			// Complete task
 			if (t.matches('[data-task-checkbox]')) {
 				const taskElement = t.closest('.task-item')
 				const taskId = taskElement.dataset.taskId
-				console.log('Complete')
 
 				task = findTask(taskId)
 				if (task == null) return
@@ -86,12 +108,11 @@ const init = () => {
 			}
 
 			// Delete task
-			if (t.matches('[data-task-delete]') || t.closest('[data-task-delete]')) {
+			if (option === 'delete') {
 				const taskElement = t.closest('.task-item')
 				const taskId = taskElement.dataset.taskId
 				const offsetHeight = taskElement.offsetHeight
 				const nextSibling = taskElement.nextElementSibling
-				console.log('Delete')
 
 				task = findTask(taskId)
 				if (task == null) return
@@ -104,11 +125,12 @@ const init = () => {
 				}
 
 				setTimeout(() => {
+					// Remove all listeners from taskElement
+					unbindAll(taskElement, taskElementListeners)
+
 					taskElement.remove()
 					if (nextSibling) nextSibling.removeAttribute('style')
 
-					// Remove all listeners from taskElement
-					unbindAll(taskElement, taskElementListeners)
 					saveState()
 					updateListCount()
 				}, timeDuration)
@@ -117,7 +139,6 @@ const init = () => {
 	})
 
 	const renderElement = ({ id, content, dateCreated, completed }) => {
-		// console.log('renderElement(), id:', id)
 		const template = select(true, '#task-template')
 		const taskElement = template.content.firstElementChild.cloneNode(true)
 
@@ -150,19 +171,14 @@ const init = () => {
 		const localStorageData = JSON.parse(localStorage.getItem(DATA))
 		if (localStorageData == null) return
 
-		__data = { ...localStorageData }
-		console.group('loadData()')
-		console.log('__data', __data)
-		console.log('__data.config', __data.config)
-		console.groupEnd()
-
 		// Setup content
+		__data = { ...localStorageData }
 		__data.tasks.forEach(renderElement)
 
 		taskContainers.forEach((container) => {
 			const taskTab = container.dataset.taskTab
 			const isCollapsed = __data.config[taskTab].collapsed
-			const toggleViewButton = select(container, '.toggle-view')
+			const toggleViewButton = select(container, '[data-option="toggle-view"]')
 
 			container.classList.toggle('collapse', isCollapsed)
 			toggleViewButton.textContent = isCollapsed ? 'Show' : 'Hide'
@@ -193,7 +209,6 @@ const init = () => {
 	}
 
 	const uniqueId = () => {
-		// return new Date().valueOf()
 		return uuidv4()
 	}
 
@@ -201,8 +216,10 @@ const init = () => {
 		// console.log('dragstart')
 		const t = e.target
 		const taskList = t.closest('[data-task-list]')
-		t.style.cursor = 'grab'
 		t.classList.add('dragging')
+
+		// Hide menu
+		select(t, '.menu__list').classList.remove('show')
 
 		// dragImage
 		e.dataTransfer.setDragImage(new Image(), 0, 0)
@@ -213,7 +230,6 @@ const init = () => {
 		const marker = document.createElement('span')
 		marker.className = 'marker'
 		taskList.insertBefore(marker, t)
-		// console.log(marker)
 	}
 
 	function handleDrag(e) {
@@ -278,12 +294,11 @@ const init = () => {
 			if (marker) {
 				if (t.closest('.task-item') && taskList) {
 					t = e.target.closest('.task-item')
-
 					const { top, height } = t.getBoundingClientRect()
 					const { clientY: y } = e
-
 					const offset = y - top - height / 2
 					const isDragZone = offset > height * -0.35 && offset < 0
+
 					if (isDragZone) {
 						taskList.insertBefore(marker, t)
 					} else if (offset >= height * 0.35 && t === taskList.lastElementChild) {
@@ -317,10 +332,10 @@ const init = () => {
 			return
 		}
 
-		dragImage.style.opacity = '1'
-		dragImage.style.transform = 'translate(-8px, -50%) scale(1) rotate(5deg)'
 		dragImage.style.left = `${x}px`
 		dragImage.style.top = `${y}px`
+		dragImage.style.transform = 'translate(-8px, -50%) scale(1) rotate(5deg)'
+		dragImage.style.opacity = '1'
 	}
 
 	const hideDragImage = () => {
