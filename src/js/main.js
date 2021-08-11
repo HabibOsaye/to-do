@@ -223,8 +223,10 @@ const init = () => {
 
 		// dragImage
 		e.dataTransfer.setDragImage(new Image(), 0, 0)
+
 		const content = select(t, '[data-task-content]').textContent
 		select(dragImage, '.drag-image__content').textContent = content
+		placeDragImage(e.clientX, e.clientY)
 
 		// Marker
 		const marker = document.createElement('span')
@@ -234,27 +236,26 @@ const init = () => {
 
 	function handleDrag(e) {
 		// console.log('drag');
-		placeDragImage(e.pageX, e.pageY)
+		placeDragImage(e.clientX, e.clientY)
 	}
 
 	function handleDragEnd(e) {
 		// console.log('dragend')
+		hideDragImage()
 		const t = e.target
 		const taskId = t.dataset.taskId
 		const checkbox = select(t, '[data-task-checkbox]')
 
 		// taskElement & Marker placement
 		const marker = select(App, '.marker')
-		if (marker) {
-			if (t.closest('[data-task-list]')) {
-				const taskList = marker.closest('[data-task-list]')
-				if (taskList.lastElementChild === marker) {
-					taskList.append(t)
-				} else {
-					taskList.insertBefore(t, marker)
-				}
-				marker.remove()
+		if (marker && t.closest('[data-task-list]')) {
+			const taskList = marker.closest('[data-task-list]')
+			if (taskList.lastElementChild === marker) {
+				taskList.append(t)
+			} else {
+				taskList.insertBefore(t, marker)
 			}
+			marker.remove()
 		}
 
 		// Update completed state
@@ -273,8 +274,6 @@ const init = () => {
 		}
 
 		t.classList.remove('dragging')
-		t.style.cursor = 'default'
-		hideDragImage()
 		updateListCount()
 		saveState()
 	}
@@ -288,15 +287,18 @@ const init = () => {
 			let taskList = t.closest('[data-task-list]')
 			const marker = select(App, '.marker')
 
-			if (container.classList.contains('collapse')) select(t, '.toggle-view').click()
-
 			// taskElement & Marker placement
 			if (marker) {
+				if (container.classList.contains('collapse')) {
+					select(container, '.toggle-view').click()
+					select(container, '[data-task-list]').prepend(marker, taskElement)
+				}
+
 				if (t.closest('.task-item') && taskList) {
 					t = e.target.closest('.task-item')
 					const { top, height } = t.getBoundingClientRect()
 					const { clientY: y } = e
-					const offset = y - top - height / 2
+					const offset = y - top - height * 0.5
 					const isDragZone = offset > height * -0.35 && offset < 0
 
 					if (isDragZone) {
