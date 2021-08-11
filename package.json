@@ -1,0 +1,23 @@
+{
+  "name": "to-do",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "parcel ./index.html -p 5024",
+    "build": "parcel build ./index.html"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-image": "^2.0.0-rc.0",
+    "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "parcel": "^2.0.0-rc.0",
+    "sass": "^1.37.5"
+  },
+  "dependencies": {
+    "date-fns": "^2.23.0",
+    "uuid": "^8.3.2"
+  }
+}

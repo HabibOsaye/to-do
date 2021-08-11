@@ -49,7 +49,7 @@ const strings = [
 	'Her scream silenced the rowdy teenagers.',
 ]
 
-const getFillerText = () => {
+const fillerText = () => {
 	let randomIndex = Math.floor(Math.random() * strings.length)
 	const string = strings[randomIndex]
 
@@ -62,4 +62,4 @@ const getFillerText = () => {
 		: copy + '.'
 }
 
-export default getFillerText
+export default fillerText
