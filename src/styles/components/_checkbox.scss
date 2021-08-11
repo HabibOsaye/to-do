@@ -76,7 +76,7 @@
 	}
 
 	[type='checkbox']:checked + div {
-		background-color: var(--color-state-selected-accent-bg);
+		background-color: var(--accent);
 
 		.icon {
 			transform: translateY(0%) scale(1);

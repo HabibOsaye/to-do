@@ -23,7 +23,7 @@
 
 	&:hover,
 	&:focus-visible {
-		background-color: var(--color-state-hover-accent-bg);
+		background-color: var(--color-bg-primary);
 	}
 
 	.icon {
@@ -70,6 +70,7 @@
 	padding: 4px;
 	height: 32px;
 	width: 32px;
+	color: var(--color-icon-primary);
 
 	.icon {
 		color: var(--color-icon-primary);
@@ -77,27 +78,50 @@
 
 	&:hover,
 	&:focus-visible {
+		color: var(--color-icon-hover);
+
 		.icon {
 			color: var(--color-icon-hover);
 		}
 	}
 }
 
+.btn-text-n-icon {
+	justify-content: flex-start;
+	color: var(--color-icon-secondary);
+
+	.icon {
+		color: var(--color-icon-secondary);
+		margin-right: 8px;
+	}
+}
+
 .btn-danger {
+	color: var(--color-text-danger);
+	.icon {
+		color: var(--color-text-danger);
+	}
+	&:hover,
 	&:focus-visible,
-	&:hover {
-		.icon {
-			color: var(--color-text-danger);
-		}
+	&:focus,
+	.icon {
+		color: var(--color-text-danger) !important;
 	}
 }
 
 .btn-lg {
 	height: 40px;
-	padding: 8px 16px;
+	padding: 4px 12px;
 	width: 120px;
 }
 
+.btn-block {
+	display: flex;
+	width: 100%;
+	padding: 8px 16px;
+	border-radius: 0;
+}
+
 .btn-rnd {
-	border-radius: 9999px;
+	border-radius: 999px;
 }
