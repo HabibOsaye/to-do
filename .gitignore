@@ -1,5 +1,6 @@
 node_modules
 content
 .cache
+.parcel-cache
 dist
 bs-config.js
