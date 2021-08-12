@@ -3,4 +3,5 @@ content
 .cache
 .parcel-cache
 dist
+serve
 bs-config.js

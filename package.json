@@ -1,14 +1,14 @@
 {
   "name": "to-do",
   "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "source": "./src/js/main.js",
   "scripts": {
-    "start": "parcel index.html -p 5024",
-    "build": "parcel build index.html"
+    "start": "npm run dump & parcel index.html -p 5024 --dist-dir ./serve",
+    "build": "npm run dump & parcel build index.html --no-optimize",
+    "dump": "rm -r .cache .parcel-cache dist serve & clear"
   },
   "keywords": [],
-  "author": "",
+  "author": "Habib T Osaye",
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-image": "^2.0.0-rc.0",
