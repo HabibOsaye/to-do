@@ -1,11 +1,10 @@
 {
   "name": "to-do",
   "version": "1.0.0",
-  "source": "./src/js/main.js",
   "scripts": {
-    "start": "npm run dump & parcel serve index.html -p 5024 --dist-dir ./serve",
+    "start": "npm run dump & parcel index.html -p 5024",
     "build": "npm run dump & parcel build index.html --no-optimize",
-    "dump": "rm -r .cache .parcel-cache dist serve & clear"
+    "dump": "rm -r .cache .parcel-cache dist & clear"
   },
   "keywords": [],
   "author": "Habib T Osaye",
