@@ -8,6 +8,7 @@
   <title>To Do</title>
   <link rel="shortcut icon" href="favicon.png" type="image/png">
   <script src="./src/js/main.js" type="module" defer></script>
+  <link rel="stylesheet" href="./src/styles/main.scss">
 </head>
 
 <body>
@@ -15,8 +16,7 @@
     <div class="modal-wrapper">
       <form data-form data-task="">
         <label for="task-input">Task</label>
-        <textarea data-task-input id="task-input" type="text" placeholder="Pick up groceries..."
-          oninput="adjustHeight(this)" rows="1"></textarea>
+        <textarea data-task-input id="task-input" type="text" placeholder="Pick up groceries..." rows="1"></textarea>
         <div class="form__actions">
           <button data-modal-close class="btn btn-outline btn-md btn-rnd" type="button">Cancel</button>
           <button class="btn btn-secondary btn-md btn-rnd" type="submit">Done</button>
@@ -48,7 +48,7 @@
       </div>
     </header>
     <div class="content">
-      <section data-task-tab="toDo" class="container collapse ">
+      <section data-task-tab="toDo" class="container">
         <div class="task-header">
           <span>To Do<span data-counter></span></span>
           <button data-option="toggle-view" class="toggle-view">Show</button>
@@ -133,12 +133,6 @@
     </div>
     <div class="drag-image__content"></div>
   </div>
-
-  <script>
-    const adjustHeight = (el) => {
-      el.style.height = (el.scrollHeight > el.clientHeight) ? el.scrollHeight + 'px' : 'auto'
-    }
-  </script>
 </body>
 
 </html>
