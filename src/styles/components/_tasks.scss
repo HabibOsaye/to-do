@@ -63,6 +63,11 @@
 		border: none;
 		outline: none;
 		cursor: pointer;
+
+		&:hover,
+		&:focus-visible {
+			color: var(--color-text-primary);
+		}
 	}
 }
 
@@ -165,6 +170,7 @@
 	min-width: 0;
 	font-weight: 500;
 	line-height: 1.5;
+	white-space: pre-wrap;
 }
 
 .task-item__date {
@@ -295,10 +301,11 @@
 	transform: translate(0%, -50%) scale(0.5);
 	transform-origin: left top;
 	opacity: 0;
+	cursor: grabbing;
 	overflow: hidden;
-	user-select: none;
 	pointer-events: none;
-	z-index: 9999;
+	user-select: none;
+	z-index: 999;
 
 	.drag-indicator {
 		width: 16px;
