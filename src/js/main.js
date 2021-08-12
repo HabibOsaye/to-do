@@ -1,5 +1,5 @@
 import TEMP from './temp'
-import fillerText from './utils/fillerText'
+// import fillerText from './utils/fillerText'
 import { select, selectAll } from './utils/select'
 import { bindAll, unbindAll } from './utils/bind'
 import { v4 as uuidv4 } from 'uuid'
@@ -12,27 +12,29 @@ let __data = {}
 
 const init = () => {
 	const App = select(true, '.App')
-	const taskForm = select(App, 'form')
-	const taskFormInput = select(App, '[data-task-input]')
+	const addTaskButton = select(App, '[data-add-task]')
+	const taskForm = select(App, '[data-form]')
+	const taskFormInput = select(taskForm, '[data-task-input]')
 	const toDoList = select(App, '[data-task-tab="toDo"] [data-task-list]')
 	const doneList = select(App, '[data-task-tab="done"] [data-task-list]')
 	const taskContainers = selectAll(App, '[data-task-tab]')
 	// const listContainers = selectAll(App, '[data-task-list]')
 	const dragImage = select(true, '.task-item-drag-image')
 
-	document.addEventListener('keyup', (e) => {
+	window.addEventListener('keyup', (e) => {
 		// Actuate click on checkboxes
 		e.stopPropagation()
 		const t = e.target
 		if (e.code === 'Enter' && t.matches('[type="checkbox"]')) t.click()
 	})
 
-	document.addEventListener('click', (e) => {
-		// Hide open menus
+	window.addEventListener('click', (e) => {
 		const t = e.target
 		if (!t.matches('[data-option="show-menu"]')) {
 			selectAll(true, '.menu__list.show').forEach((n) => n.classList.remove('show'))
 		}
+
+		if (t.matches('[data-modal-close]')) t.closest('.modal-wrapper').classList.remove('show')
 	})
 
 	const taskElementListeners = [
@@ -41,24 +43,53 @@ const init = () => {
 		{ type: 'dragend', listener: handleDragEnd },
 	]
 
+	addTaskButton.addEventListener('click', () => {
+		taskForm.closest('.modal-wrapper').classList.add('show')
+		taskFormInput.focus()
+	})
+
 	taskForm.addEventListener('submit', function (e) {
 		e.preventDefault()
-		// let content = taskFormInput.value
-		let content = taskFormInput.value === '' ? fillerText() : taskFormInput.value
-		if (content.toString().trim() == '') return
-		taskFormInput.value = ''
+		const id = e.target.dataset.task
 
+		if (id === '') {
+			const content = taskFormInput.value
+			// let content = taskFormInput.value === '' ? fillerText() : taskFormInput.value
+			if (content.toString().trim() === '') {
+				alert('Empty field!')
+				return
+			}
+
+			createTask(content)
+		} else {
+			handleEdit(id)
+		}
+
+		taskFormInput.value = ''
+		taskForm.setAttribute('data-task', '')
+		taskForm.closest('.modal-wrapper').classList.remove('show')
+		saveState()
+	})
+
+	const createTask = (value) => {
 		const newTask = {
 			id: uniqueId(),
-			content,
+			content: value,
 			dateCreated: new Date(),
 			completed: false,
 		}
 		__data.tasks.push(newTask)
 		renderElement(newTask)
 		updateListCount()
-		saveState()
-	})
+	}
+
+	function handleEdit(id) {
+		const task = findTask(id)
+		if (task == null) return
+		const newContent = taskFormInput.value.toString()
+		task.content = newContent
+		select(true, `[data-task-id="${id}"] [data-task-content]`).textContent = newContent
+	}
 
 	taskContainers.forEach((container) => {
 		container.addEventListener('click', (e) => {
@@ -69,7 +100,7 @@ const init = () => {
 			const timeDuration = 250
 			let task
 
-			// Toggle tab view
+			// Toggle view
 			if (option === 'toggle-view') {
 				container.classList.toggle('collapse')
 				t.textContent = t.textContent === 'Hide' ? 'Show' : 'Hide'
@@ -89,10 +120,19 @@ const init = () => {
 
 			// Edit task
 			if (option === 'edit') {
+				console.log('Edit')
+				const taskElement = t.closest('.task-item')
+				const taskId = taskElement.dataset.taskId
+
+				taskForm.setAttribute('data-task', taskId)
+				taskFormInput.value = select(taskElement, '[data-task-content]').textContent
+
+				taskForm.closest('.modal-wrapper').classList.add('show')
+				taskFormInput.focus()
 			}
 
 			// Complete task
-			if (t.matches('[data-task-checkbox]')) {
+			if (option === 'complete') {
 				const taskElement = t.closest('.task-item')
 				const taskId = taskElement.dataset.taskId
 
@@ -146,7 +186,7 @@ const init = () => {
 		select(taskElement, '.checkbox label').htmlFor = id
 		select(taskElement, '[data-task-content]').textContent = content
 		select(taskElement, '[data-task-date]').textContent = formatDate(dateCreated)
-		const checkbox = select(taskElement, '[data-task-checkbox]')
+		const checkbox = select(taskElement, '[data-option="complete"]')
 		checkbox.id = id
 		checkbox.checked = completed
 
@@ -244,7 +284,7 @@ const init = () => {
 		hideDragImage()
 		const t = e.target
 		const taskId = t.dataset.taskId
-		const checkbox = select(t, '[data-task-checkbox]')
+		const checkbox = select(t, '[data-option="complete"]')
 
 		// taskElement & Marker placement
 		const marker = select(App, '.marker')
@@ -336,7 +376,7 @@ const init = () => {
 
 		dragImage.style.left = `${x}px`
 		dragImage.style.top = `${y}px`
-		dragImage.style.transform = 'translate(-8px, -50%) scale(1) rotate(5deg)'
+		dragImage.style.transform = 'translate(-8px, -50%) scale(1)'
 		dragImage.style.opacity = '1'
 	}
 

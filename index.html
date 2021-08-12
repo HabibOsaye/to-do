@@ -12,10 +12,32 @@
 
 <body>
   <main class="App">
+    <div class="modal-wrapper">
+      <form data-form data-task="">
+        <label for="task-input">Task</label>
+        <textarea data-task-input id="task-input" type="text" placeholder="Pick up groceries..."
+          oninput="adjustHeight(this)" rows="1"></textarea>
+        <div class="form__actions">
+          <button data-modal-close class="btn btn-outline btn-md btn-rnd" type="button">Cancel</button>
+          <button class="btn btn-secondary btn-md btn-rnd" type="submit">Done</button>
+        </div>
+        <button data-modal-close class="btn btn-tertiary btn-w-icon btn-rnd cancel" type="button">
+          <svg class="icon icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M5.71967 5.71967C6.01256 5.42678 6.48744 5.42678 6.78033 5.71967L12 10.9393L17.2197 5.71967C17.5126 5.42678 17.9874 5.42678 18.2803 5.71967C18.5732 6.01256 18.5732 6.48744 18.2803 6.78033L13.0607 12L18.2803 17.2197C18.5732 17.5126 18.5732 17.9874 18.2803 18.2803C17.9874 18.5732 17.5126 18.5732 17.2197 18.2803L12 13.0607L6.78033 18.2803C6.48744 18.5732 6.01256 18.5732 5.71967 18.2803C5.42678 17.9874 5.42678 17.5126 5.71967 17.2197L10.9393 12L5.71967 6.78033C5.42678 6.48744 5.42678 6.01256 5.71967 5.71967Z" />
+          </svg>
+        </button>
+      </form>
+      <span data-modal-close class="modal-close"></span>
+    </div>
     <header class="header">
-      <form>
-        <input data-task-input type="text" placeholder="Add tasks here..." />
-        <button class="btn btn-secondary btn-lg btn-rnd" type="submit">
+      <div>
+        <span class="header__title">
+          <img src="./src/assets/images/to-do.png" alt="">
+          Tasks
+        </span>
+        <button data-add-task class="btn btn-secondary btn-lg btn-rnd" type="button">
           <svg class="icon icon-md" width="16" height="16" viewBox="0 0 16 16" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
@@ -23,10 +45,10 @@
           </svg>
           <span>Add Task</span>
         </button>
-      </form>
+      </div>
     </header>
     <div class="content">
-      <section data-task-tab="toDo" class="container collapse">
+      <section data-task-tab="toDo" class="container collapse ">
         <div class="task-header">
           <span>To Do<span data-counter></span></span>
           <button data-option="toggle-view" class="toggle-view">Show</button>
@@ -56,7 +78,7 @@
       </section>
     </div>
   </main>
-
+  <!-- Templates -->
   <template id="task-template">
     <li data-task-id class="task-item" draggable="true">
       <div class="btn btn-w-icon btn-tertiary drag-indicator">
@@ -68,7 +90,7 @@
       </div>
       <div class="checkbox" role="checkbox">
         <label for=""></label>
-        <input data-task-checkbox id="" class="visually-hidden" type="checkbox" />
+        <input data-option="complete" id="" class="visually-hidden" type="checkbox" />
         <div>
           <svg class="icon icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M0,0H24V24H0Z" fill="none" />
@@ -82,8 +104,8 @@
         <div data-task-date class="task-item__date"></div>
       </div>
       <div class="task-item__options">
-        <button data-option="show-menu" class="btn btn-tertiary btn-rnd btn-w-icon">
-          <svg class="icon icon-md" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        <button data-option="show-menu" class="btn btn-tertiary btn-rnd btn-w-icon" type="button">
+          <svg class="icon icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M6 12C6 13.1046 5.10457 14 4 14C2.89543 14 2 13.1046 2 12C2 10.8954 2.89543 10 4 10C5.10457 10 6 10.8954 6 12ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12ZM20 14C21.1046 14 22 13.1046 22 12C22 10.8954 21.1046 10 20 10C18.8954 10 18 10.8954 18 12C18 13.1046 18.8954 14 20 14Z" />
@@ -91,33 +113,16 @@
         </button>
 
         <div class="menu__list">
-          <button data-option="edit" class="btn btn-tertiary btn-block btn-text-n-icon">
-            <svg class="icon icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M17.2626 2.17675C17.946 1.49333 19.054 1.49333 19.7374 2.17675L22.3232 4.76254C23.0066 5.44595 23.0066 6.55399 22.3232 7.23741L19.5303 10.0303L19.5179 10.0425L8.68979 20.3784C8.49196 20.5672 8.25263 20.7071 7.99099 20.7867L2.46838 22.4675C2.20339 22.5481 1.91553 22.4762 1.71967 22.2803C1.52382 22.0844 1.45185 21.7966 1.5325 21.5316L3.2061 16.0326C3.29375 15.7446 3.4542 15.4841 3.67195 15.2763L14.4758 4.96347L17.2626 2.17675ZM14.9878 6.54844L4.70766 16.3613C4.67655 16.391 4.65363 16.4282 4.64111 16.4694L3.37695 20.623L7.55425 19.3517C7.59162 19.3403 7.62581 19.3203 7.65408 19.2933L17.9269 9.48749L14.9878 6.54844ZM19 8.43931L21.2626 6.17675C21.3602 6.07912 21.3602 5.92083 21.2626 5.8232L18.6768 3.23741C18.5791 3.13978 18.4209 3.13978 18.3232 3.23741L16.0607 5.49997L19 8.43931Z" />
-            </svg>
+          <button data-option="edit" class="btn btn-tertiary btn-block" type="button">
             Edit
           </button>
-          <button data-option="delete" class="btn btn-tertiary btn-block btn-danger btn-text-n-icon">
-            <svg class="icon icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M16 1.75V3H21.25C21.6642 3 22 3.33579 22 3.75C22 4.16421 21.6642 4.5 21.25 4.5H2.75C2.33579 4.5 2 4.16421 2 3.75C2 3.33579 2.33579 3 2.75 3H8V1.75C8 0.783502 8.7835 0 9.75 0H14.25C15.2165 0 16 0.783502 16 1.75ZM9.5 1.75C9.5 1.61193 9.61193 1.5 9.75 1.5H14.25C14.3881 1.5 14.5 1.61193 14.5 1.75V3H9.5V1.75Z" />
-              <path
-                d="M4.99657 6.17775C4.95667 5.76546 4.5901 5.46358 4.17781 5.50348C3.76552 5.54338 3.46364 5.90995 3.50354 6.32224L4.91609 20.9186C5.0029 21.8156 5.75674 22.5 6.65795 22.5H17.3422C18.2434 22.5 18.9972 21.8156 19.084 20.9186L20.4966 6.32224C20.5365 5.90995 20.2346 5.54338 19.8223 5.50348C19.41 5.46358 19.0434 5.76546 19.0035 6.17775L17.591 20.7741C17.5786 20.9022 17.4709 21 17.3422 21H6.65795C6.52921 21 6.42151 20.9022 6.40911 20.7741L4.99657 6.17775Z" />
-              <path
-                d="M9.20598 7.50129C9.61948 7.47696 9.97441 7.79245 9.99873 8.20595L10.4987 16.706C10.5231 17.1194 10.2076 17.4744 9.79406 17.4987C9.38057 17.523 9.02564 17.2075 9.00132 16.794L8.50132 8.29403C8.47699 7.88054 8.79248 7.52561 9.20598 7.50129Z" />
-              <path
-                d="M15.4987 8.29403C15.5231 7.88054 15.2076 7.52561 14.7941 7.50129C14.3806 7.47696 14.0256 7.79245 14.0013 8.20595L13.5013 16.706C13.477 17.1194 13.7925 17.4744 14.206 17.4987C14.6195 17.523 14.9744 17.2075 14.9987 16.794L15.4987 8.29403Z" />
-            </svg>
+          <button data-option="delete" class="btn btn-tertiary btn-block btn-danger" type="button">
             Delete
           </button>
         </div>
       </div>
     </li>
   </template>
-
   <div class="task-item-drag-image">
     <div class="btn btn-w-icon btn-tertiary drag-indicator">
       <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -128,6 +133,12 @@
     </div>
     <div class="drag-image__content"></div>
   </div>
+
+  <script>
+    const adjustHeight = (el) => {
+      el.style.height = (el.scrollHeight > el.clientHeight) ? el.scrollHeight + 'px' : 'auto'
+    }
+  </script>
 </body>
 
 </html>
