@@ -35,7 +35,7 @@ const TEMP = {
 		},
 		{
 			id: '711a6641-80c4-4a5c-854c-2d7990261c03',
-			content: 'Pick up chilies on your way back from town',
+			content: 'Stuff to pick up on your way back from town\n  - Chilies\n  - Get film batteries\n  - Microfiber cloth',
 			completed: false,
 			dateCreated: subMinutes(new Date(), 3 * min + 130),
 			order: 3,
@@ -50,16 +50,17 @@ const TEMP = {
 		{
 			id: '3c7f53a2-2c72-4dbb-b473-90526871cc99',
 			content: 'Get a new pc work station',
-			dateCreated: subMinutes(new Date(), 1 * min),
+			dateCreated: subMinutes(new Date(), 1 * min + 31),
 			completed: false,
 			order: 1,
 		},
 		{
 			id: '2c81b418-fc51-471d-88cc-951788edda78',
-			content: 'Rebuild this project with React Js',
-			dateCreated: subMinutes(new Date(), 1 + 65),
+			content: 'Rebuild this project with React Js?',
+			dateCreated: subMinutes(new Date(), 1 + 27),
 			completed: false,
 			order: 0,
+			lastEdit: subMinutes(new Date(), 1 + 18),
 		},
 	],
 }
