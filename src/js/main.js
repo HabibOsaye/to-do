@@ -1,10 +1,10 @@
 import TEMP from './temp'
-// import fillerText from './utils/fillerText'
 import { select, selectAll } from './utils/select'
 import { bindAll, unbindAll } from './utils/bind'
 import { v4 as uuidv4 } from 'uuid'
 import { format, isToday, isYesterday, isThisWeek } from 'date-fns'
 import '../styles/main.scss'
+// import fillerText from './utils/fillerText'
 
 const LOCAL_STORAGE_KEY = '__TODO_APP__'
 const DATA = LOCAL_STORAGE_KEY + 'DATA'
@@ -18,7 +18,6 @@ const init = () => {
 	const toDoList = select(App, '[data-task-tab="toDo"] [data-task-list]')
 	const doneList = select(App, '[data-task-tab="done"] [data-task-list]')
 	const taskContainers = selectAll(App, '[data-task-tab]')
-	// const listContainers = selectAll(App, '[data-task-list]')
 	const dragImage = select(true, '.task-item-drag-image')
 
 	window.addEventListener('keyup', (e) => {
@@ -53,14 +52,14 @@ const init = () => {
 		const id = e.target.dataset.task
 
 		if (id === '') {
+			// const content = taskFormInput.value === '' ? fillerText() : taskFormInput.value
 			const content = taskFormInput.value
-			// let content = taskFormInput.value === '' ? fillerText() : taskFormInput.value
 			if (content.toString().trim() === '') {
 				alert('Empty field!')
 				return
 			}
 
-			createTask(content)
+			addTask(content)
 		} else {
 			handleEdit(id)
 		}
@@ -71,29 +70,72 @@ const init = () => {
 		saveState()
 	})
 
-	const createTask = (value) => {
-		const newTask = {
-			id: uniqueId(),
-			content: value,
-			dateCreated: new Date(),
-			completed: false,
-		}
-		__data.tasks.push(newTask)
-		renderElement(newTask)
-		updateListCount()
+	function handleDragStart(e) {
+		const t = e.target
+		const taskList = t.closest('[data-task-list]')
+		t.classList.add('dragging')
+
+		// Hide menu
+		select(t, '.menu__list').classList.remove('show')
+
+		// dragImage
+		e.dataTransfer.setDragImage(new Image(), 0, 0)
+
+		const content = select(t, '[data-task-content]').textContent
+		select(dragImage, '.drag-image__content').textContent = content
+		placeDragImage(e.clientX, e.clientY)
+
+		// Marker
+		const marker = document.createElement('span')
+		marker.className = 'marker'
+		marker.style.pointerEvents = 'none'
+		taskList.insertBefore(marker, t)
 	}
 
-	function handleEdit(id) {
-		const task = findTask(id)
-		if (task == null) return
-		const newContent = taskFormInput.value.toString()
-		task.content = newContent
-		select(true, `[data-task-id="${id}"] [data-task-content]`).textContent = newContent
+	function handleDrag(e) {
+		placeDragImage(e.clientX, e.clientY)
+	}
+
+	function handleDragEnd(e) {
+		hideDragImage()
+		const t = e.target
+		const taskId = t.dataset.taskId
+		const checkbox = select(t, '[data-option="complete"]')
+
+		// taskElement & Marker placement
+		const marker = select(App, '.marker')
+		if (marker && t.closest('[data-task-list]')) {
+			const taskList = marker.closest('[data-task-list]')
+			if (taskList.lastElementChild === marker) {
+				taskList.append(t)
+			} else {
+				taskList.insertBefore(t, marker)
+			}
+			marker.remove()
+		}
+
+		// Update completed state
+		if (t.closest('[data-task-tab="toDo"]') && t.matches('.task-item.completed')) {
+			const task = findTask(taskId)
+			if (task == null) return
+			checkbox.checked = false
+			task.completed = false
+			t.classList.remove('completed')
+		} else if (t.closest('[data-task-tab="done"]') && t.matches('.task-item:not(.completed)')) {
+			const task = findTask(taskId)
+			if (task == null) return
+			checkbox.checked = true
+			task.completed = true
+			t.classList.add('completed')
+		}
+
+		t.classList.remove('dragging')
+		updateListCount()
+		saveState()
 	}
 
 	taskContainers.forEach((container) => {
 		container.addEventListener('click', (e) => {
-			// e.stopPropagation()
 			const t = e.target
 			const option = t.dataset.option
 			const taskTab = container.dataset.taskTab
@@ -178,6 +220,61 @@ const init = () => {
 		})
 	})
 
+	taskContainers.forEach((container) => {
+		container.addEventListener('dragover', (e) => {
+			e.preventDefault()
+			let t = e.target
+			const taskElement = select(App, '.task-item.dragging')
+			let taskList = t.closest('[data-task-list]')
+			const marker = select(App, '.marker')
+
+			// taskElement & Marker placement
+			if (marker) {
+				if (container.classList.contains('collapse')) {
+					select(container, '.toggle-view').click()
+					select(container, '[data-task-list]').prepend(marker, taskElement)
+				}
+
+				if (t.closest('.task-item') && taskList) {
+					t = e.target.closest('.task-item')
+					const { top, height } = t.getBoundingClientRect()
+					const { clientY: y } = e
+					const offset = y - top - height * 0.5
+					const isDragZone = offset > height * -0.35 && offset < 0
+
+					if (isDragZone) {
+						taskList.insertBefore(marker, t)
+					} else if (offset >= height * 0.35 && t === taskList.lastElementChild) {
+						taskList.append(marker)
+					}
+				} else if (taskList && taskList.childElementCount === 0) {
+					taskList.append(marker, taskElement)
+				}
+			}
+			updateListCount()
+		})
+	})
+
+	const addTask = (value) => {
+		const newTask = {
+			id: uniqueId(),
+			content: value,
+			dateCreated: new Date(),
+			completed: false,
+		}
+		__data.tasks.push(newTask)
+		renderElement(newTask)
+		updateListCount()
+	}
+
+	function handleEdit(id) {
+		const task = findTask(id)
+		if (task == null) return
+		const newContent = taskFormInput.value.toString()
+		task.content = newContent
+		select(true, `[data-task-id="${id}"] [data-task-content]`).textContent = newContent
+	}
+
 	const renderElement = ({ id, content, dateCreated, completed }) => {
 		const template = select(true, '#task-template')
 		const taskElement = template.content.firstElementChild.cloneNode(true)
@@ -252,108 +349,6 @@ const init = () => {
 		return uuidv4()
 	}
 
-	function handleDragStart(e) {
-		// console.log('dragstart')
-		const t = e.target
-		const taskList = t.closest('[data-task-list]')
-		t.classList.add('dragging')
-
-		// Hide menu
-		select(t, '.menu__list').classList.remove('show')
-
-		// dragImage
-		e.dataTransfer.setDragImage(new Image(), 0, 0)
-
-		const content = select(t, '[data-task-content]').textContent
-		select(dragImage, '.drag-image__content').textContent = content
-		placeDragImage(e.clientX, e.clientY)
-
-		// Marker
-		const marker = document.createElement('span')
-		marker.className = 'marker'
-		taskList.insertBefore(marker, t)
-	}
-
-	function handleDrag(e) {
-		// console.log('drag');
-		placeDragImage(e.clientX, e.clientY)
-	}
-
-	function handleDragEnd(e) {
-		// console.log('dragend')
-		hideDragImage()
-		const t = e.target
-		const taskId = t.dataset.taskId
-		const checkbox = select(t, '[data-option="complete"]')
-
-		// taskElement & Marker placement
-		const marker = select(App, '.marker')
-		if (marker && t.closest('[data-task-list]')) {
-			const taskList = marker.closest('[data-task-list]')
-			if (taskList.lastElementChild === marker) {
-				taskList.append(t)
-			} else {
-				taskList.insertBefore(t, marker)
-			}
-			marker.remove()
-		}
-
-		// Update completed state
-		if (t.closest('[data-task-tab="toDo"]') && t.matches('.task-item.completed')) {
-			const task = findTask(taskId)
-			if (task == null) return
-			checkbox.checked = false
-			task.completed = false
-			t.classList.remove('completed')
-		} else if (t.closest('[data-task-tab="done"]') && t.matches('.task-item:not(.completed)')) {
-			const task = findTask(taskId)
-			if (task == null) return
-			checkbox.checked = true
-			task.completed = true
-			t.classList.add('completed')
-		}
-
-		t.classList.remove('dragging')
-		updateListCount()
-		saveState()
-	}
-
-	taskContainers.forEach((container) => {
-		container.addEventListener('dragover', (e) => {
-			// console.log('dragover')
-			e.preventDefault()
-			let t = e.target
-			const taskElement = select(App, '.task-item.dragging')
-			let taskList = t.closest('[data-task-list]')
-			const marker = select(App, '.marker')
-
-			// taskElement & Marker placement
-			if (marker) {
-				if (container.classList.contains('collapse')) {
-					select(container, '.toggle-view').click()
-					select(container, '[data-task-list]').prepend(marker, taskElement)
-				}
-
-				if (t.closest('.task-item') && taskList) {
-					t = e.target.closest('.task-item')
-					const { top, height } = t.getBoundingClientRect()
-					const { clientY: y } = e
-					const offset = y - top - height * 0.5
-					const isDragZone = offset > height * -0.35 && offset < 0
-
-					if (isDragZone) {
-						taskList.insertBefore(marker, t)
-					} else if (offset >= height * 0.35 && t === taskList.lastElementChild) {
-						taskList.append(marker)
-					}
-				} else if (taskList && taskList.childElementCount === 0) {
-					taskList.append(marker, taskElement)
-				}
-			}
-			updateListCount()
-		})
-	})
-
 	const moveTask = (taskElement, boolean) => {
 		const list = boolean ? doneList : toDoList
 		list.prepend(taskElement)
@@ -378,6 +373,7 @@ const init = () => {
 		dragImage.style.top = `${y}px`
 		dragImage.style.transform = 'translate(-8px, -50%) scale(1)'
 		dragImage.style.opacity = '1'
+		dragImage.style.cursor = 'grabbing'
 	}
 
 	const hideDragImage = () => {
