@@ -85,14 +85,21 @@
 		}
 	}
 }
-
 .btn-text-n-icon {
 	justify-content: flex-start;
-	color: var(--color-icon-secondary);
+	color: var(--color-icon-primary);
 
 	.icon {
-		color: var(--color-icon-secondary);
-		margin-right: 8px;
+		margin-right: 10px;
+	}
+
+	&:hover,
+	&:focus-visible {
+		color: var(--color-icon-hover);
+
+		.icon {
+			color: var(--color-icon-hover);
+		}
 	}
 }
 
@@ -109,12 +116,18 @@
 	}
 }
 
+.btn-md {
+	height: 32px;
+	padding: 4px 12px;
+	font-weight: 500;
+	min-width: 86px;
+}
 .btn-lg {
 	height: 40px;
-	padding: 4px 12px;
-	width: 120px;
+	padding: 4px 16px;
+	font-weight: 500;
+	min-width: 120px;
 }
-
 .btn-block {
 	display: flex;
 	width: 100%;
