@@ -3,7 +3,6 @@ import { select, selectAll } from './utils/select'
 import { bindAll, unbindAll } from './utils/bind'
 import { v4 as uuidv4 } from 'uuid'
 import { format, isToday, isYesterday, isThisWeek } from 'date-fns'
-import '../styles/main.scss'
 // import fillerText from './utils/fillerText'
 
 const LOCAL_STORAGE_KEY = '__TODO_APP__'
@@ -69,6 +68,14 @@ const init = () => {
 		taskForm.closest('.modal-wrapper').classList.remove('show')
 		saveState()
 	})
+
+	taskFormInput.onfocus = adjustHeight.bind(taskFormInput)
+	taskFormInput.oninput = adjustHeight.bind(taskFormInput)
+
+	function adjustHeight() {
+		this.style.height = 'auto'
+		this.style.height = this.scrollHeight + 'px'
+	}
 
 	function handleDragStart(e) {
 		const t = e.target
@@ -162,7 +169,6 @@ const init = () => {
 
 			// Edit task
 			if (option === 'edit') {
-				console.log('Edit')
 				const taskElement = t.closest('.task-item')
 				const taskId = taskElement.dataset.taskId
 
@@ -271,18 +277,26 @@ const init = () => {
 		const task = findTask(id)
 		if (task == null) return
 		const newContent = taskFormInput.value.toString()
+		const newDate = new Date()
+
+		if (newContent === task.content) return
 		task.content = newContent
+		task.lastEdit = newDate
+
 		select(true, `[data-task-id="${id}"] [data-task-content]`).textContent = newContent
+		select(true, `[data-task-id="${id}"] [data-task-date]`).textContent = 'Edited ' + formatDate(newDate)
 	}
 
-	const renderElement = ({ id, content, dateCreated, completed }) => {
+	const renderElement = ({ id, content, dateCreated, lastEdit, completed }) => {
 		const template = select(true, '#task-template')
 		const taskElement = template.content.firstElementChild.cloneNode(true)
 
 		taskElement.dataset.taskId = id
 		select(taskElement, '.checkbox label').htmlFor = id
 		select(taskElement, '[data-task-content]').textContent = content
-		select(taskElement, '[data-task-date]').textContent = formatDate(dateCreated)
+		select(taskElement, '[data-task-date]').textContent = lastEdit
+			? 'Edited ' + formatDate(lastEdit)
+			: formatDate(dateCreated)
 		const checkbox = select(taskElement, '[data-option="complete"]')
 		checkbox.id = id
 		checkbox.checked = completed
