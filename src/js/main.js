@@ -13,7 +13,7 @@ const init = () => {
 	const App = select(true, '.App')
 	const addTaskButton = select(App, '[data-add-task]')
 	const taskForm = select(App, '[data-form]')
-	const taskFormInput = select(taskForm, '[data-task-input]')
+	const taskFormInput = taskForm.elements['task-input']
 	const toDoList = select(App, '[data-task-tab="toDo"] [data-task-list]')
 	const doneList = select(App, '[data-task-tab="done"] [data-task-list]')
 	const taskContainers = selectAll(App, '[data-task-tab]')
@@ -32,7 +32,10 @@ const init = () => {
 			selectAll(true, '.menu__list.show').forEach((n) => n.classList.remove('show'))
 		}
 
-		if (t.matches('[data-modal-close]')) t.closest('.modal-wrapper').classList.remove('show')
+		if (t.matches('[data-modal-close]')) {
+			taskFormInput.value = ''
+			t.closest('.modal-wrapper').classList.remove('show')
+		}
 	})
 
 	const taskElementListeners = [
