@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "npm run dump & parcel serve index.html -p 5024",
-    "dump": "rm -r .cache .parcel-cache dist & clear"
+    "dump": "rm -rf .cache .parcel-cache dist & clear"
   },
   "author": "Habib T Osaye",
   "license": "ISC",
