@@ -8,7 +8,7 @@ const TEMP = {
 			collapsed: false,
 		},
 		done: {
-			collapsed: false,
+			collapsed: true,
 		},
 	},
 	tasks: [
