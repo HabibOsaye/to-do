@@ -2,17 +2,16 @@
   "name": "to-do",
   "version": "1.0.0",
   "scripts": {
-    "start": "npm run dump & parcel index.html -p 5024",
-    "build": "npm run dump & parcel build index.html --no-optimize",
+    "start": "npm run dump & parcel serve index.html -p 5024",
     "dump": "rm -r .cache .parcel-cache dist & clear"
   },
-  "keywords": [],
   "author": "Habib T Osaye",
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-image": "^2.0.0-rc.0",
     "@parcel/transformer-sass": "^2.0.0-rc.0",
     "parcel": "^2.0.0-rc.0",
+    "postcss-preset-env": "^6.7.0",
     "sass": "^1.37.5"
   },
   "dependencies": {
