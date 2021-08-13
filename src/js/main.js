@@ -12,7 +12,7 @@ let __data = {}
 const init = () => {
 	const App = select(true, '.App')
 	const addTaskButton = select(App, '[data-add-task]')
-	const taskForm = select(App, '[data-form]')
+	const taskForm = select(document, '[data-form]')
 	const taskFormInput = taskForm.elements['task-input']
 	const toDoList = select(App, '[data-task-tab="toDo"] [data-task-list]')
 	const doneList = select(App, '[data-task-tab="done"] [data-task-list]')
@@ -34,7 +34,8 @@ const init = () => {
 
 		if (t.matches('[data-modal-close]')) {
 			taskFormInput.value = ''
-			t.closest('.modal-wrapper').classList.remove('show')
+			t.closest('.modal-wrapper').classList.toggle('show')
+			document.body.style.overflow = ''
 		}
 	})
 
@@ -45,7 +46,8 @@ const init = () => {
 	]
 
 	addTaskButton.addEventListener('click', () => {
-		taskForm.closest('.modal-wrapper').classList.add('show')
+		document.body.style.overflow = 'hidden'
+		taskForm.closest('.modal-wrapper').classList.toggle('show')
 		taskFormInput.focus()
 	})
 
@@ -178,6 +180,7 @@ const init = () => {
 				taskForm.setAttribute('data-task', taskId)
 				taskFormInput.value = select(taskElement, '[data-task-content]').textContent
 
+				document.body.style.overflow = 'hidden'
 				taskForm.closest('.modal-wrapper').classList.add('show')
 				taskFormInput.focus()
 			}
