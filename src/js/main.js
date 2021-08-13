@@ -324,8 +324,8 @@ const init = () => {
 		if (dateStr === '') return (dateStr = format(date, 'P', { weekStartsOn: 1 }))
 	}
 
-	const loadData = () => {
-		const localStorageData = JSON.parse(localStorage.getItem(DATA))
+	const loadData = (data) => {
+		const localStorageData = data ?? JSON.parse(localStorage.getItem(DATA))
 		if (localStorageData == null) return
 
 		// Setup content
@@ -403,8 +403,7 @@ const init = () => {
 	if (localStorage.getItem(DATA) != null) {
 		loadData()
 	} else {
-		__data = { ...TEMP }
-		__data.tasks.forEach(renderElement)
+		loadData(TEMP)
 	}
 	updateListCount()
 }
