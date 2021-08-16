@@ -8,13 +8,12 @@
   <title>To Do</title>
   <link rel="shortcut icon" href="favicon.png" type="image/png">
   <script src="./src/js/main.js" type="module" defer></script>
-  <link rel="stylesheet" href="./src/styles/main.scss">
 </head>
 <div class="modal-wrapper">
   <form data-form data-task="">
     <div class="form__header">
       <button data-modal-close class="btn btn-outline btn-w-icon btn-rnd cancel" type="button">
-        <svg class="icon icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none"
           xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" clip-rule="evenodd"
             d="M5.71967 5.71967C6.01256 5.42678 6.48744 5.42678 6.78033 5.71967L12 10.9393L17.2197 5.71967C17.5126 5.42678 17.9874 5.42678 18.2803 5.71967C18.5732 6.01256 18.5732 6.48744 18.2803 6.78033L13.0607 12L18.2803 17.2197C18.5732 17.5126 18.5732 17.9874 18.2803 18.2803C17.9874 18.5732 17.5126 18.5732 17.2197 18.2803L12 13.0607L6.78033 18.2803C6.48744 18.5732 6.01256 18.5732 5.71967 18.2803C5.42678 17.9874 5.42678 17.5126 5.71967 17.2197L10.9393 12L5.71967 6.78033C5.42678 6.48744 5.42678 6.01256 5.71967 5.71967Z" />
@@ -40,7 +39,7 @@
           Tasks
         </span>
         <button data-add-task class="btn btn-secondary btn-lg btn-rnd" type="button">
-          <svg class="icon icon-md" width="16" height="16" viewBox="0 0 16 16" fill="none"
+          <svg class="icon icon-md" viewBox="0 0 16 16" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M7.75 2C7.94891 2 8.13968 2.07902 8.28033 2.21967C8.42098 2.36032 8.5 2.55109 8.5 2.75V7H12.75C12.9489 7 13.1397 7.07902 13.2803 7.21967C13.421 7.36032 13.5 7.55109 13.5 7.75C13.5 7.94891 13.421 8.13968 13.2803 8.28033C13.1397 8.42098 12.9489 8.5 12.75 8.5H8.5V12.75C8.5 12.9489 8.42098 13.1397 8.28033 13.2803C8.13968 13.421 7.94891 13.5 7.75 13.5C7.55109 13.5 7.36032 13.421 7.21967 13.2803C7.07902 13.1397 7 12.9489 7 12.75V8.5H2.75C2.55109 8.5 2.36032 8.42098 2.21967 8.28033C2.07902 8.13968 2 7.94891 2 7.75C2 7.55109 2.07902 7.36032 2.21967 7.21967C2.36032 7.07902 2.55109 7 2.75 7H7V2.75C7 2.55109 7.07902 2.36032 7.21967 2.21967C7.36032 2.07902 7.55109 2 7.75 2Z" />
@@ -84,7 +83,7 @@
   <template id="task-template">
     <li data-task-id class="task-item" draggable="true">
       <div class="btn btn-w-icon btn-tertiary drag-indicator">
-        <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path
             d="M14,13a1,1,0,1,0,1,1A1,1,0,0,0,14,13Zm-4,0a1,1,0,1,0,1,1A1,1,0,0,0,10,13Zm4,4a1,1,0,1,0,1,1A1,1,0,0,0,14,17Zm-4,0a1,1,0,1,0,1,1A1,1,0,0,0,10,17Zm4-8a1,1,0,1,0,1,1A1,1,0,0,0,14,9ZM10,9a1,1,0,1,0,1,1A1,1,0,0,0,10,9Zm4-2a1,1,0,1,0-1-1A1,1,0,0,0,14,7ZM10,5a1,1,0,1,0,1,1A1,1,0,0,0,10,5Z"
             fill-rule="evenodd" />
@@ -94,7 +93,7 @@
         <label for=""></label>
         <input data-option="complete" id="" class="visually-hidden" type="checkbox" />
         <div>
-          <svg class="icon icon-md" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+          <svg class="icon icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path d="M0,0H24V24H0Z" fill="none" />
             <path
               d="M17.28,9.28a.75.75,0,0,0-1.06-1.06l-6,6L7.78,11.72a.75.75,0,0,0-1.06,1.06l3,3a.75.75,0,0,0,1.06,0Z" />
@@ -107,7 +106,7 @@
       </div>
       <div class="task-item__options">
         <button data-option="show-menu" class="btn btn-tertiary btn-rnd btn-w-icon" type="button">
-          <svg class="icon icon-sm" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none"
             xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd"
               d="M6 12C6 13.1046 5.10457 14 4 14C2.89543 14 2 13.1046 2 12C2 10.8954 2.89543 10 4 10C5.10457 10 6 10.8954 6 12ZM14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12ZM20 14C21.1046 14 22 13.1046 22 12C22 10.8954 21.1046 10 20 10C18.8954 10 18 10.8954 18 12C18 13.1046 18.8954 14 20 14Z" />
@@ -127,7 +126,7 @@
   </template>
   <div class="task-item-drag-image">
     <div class="btn btn-w-icon btn-tertiary drag-indicator">
-      <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+      <svg class="icon icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path
           d="M14,13a1,1,0,1,0,1,1A1,1,0,0,0,14,13Zm-4,0a1,1,0,1,0,1,1A1,1,0,0,0,10,13Zm4,4a1,1,0,1,0,1,1A1,1,0,0,0,14,17Zm-4,0a1,1,0,1,0,1,1A1,1,0,0,0,10,17Zm4-8a1,1,0,1,0,1,1A1,1,0,0,0,14,9ZM10,9a1,1,0,1,0,1,1A1,1,0,0,0,10,9Zm4-2a1,1,0,1,0-1-1A1,1,0,0,0,14,7ZM10,5a1,1,0,1,0,1,1A1,1,0,0,0,10,5Z"
           fill-rule="evenodd" />
