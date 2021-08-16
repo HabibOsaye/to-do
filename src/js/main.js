@@ -4,6 +4,7 @@ import { bindAll, unbindAll } from './utils/bind'
 import { v4 as uuidv4 } from 'uuid'
 import { format, isToday, isYesterday, isThisWeek } from 'date-fns'
 // import fillerText from './utils/fillerText'
+import '../styles/main.scss'
 
 const LOCAL_STORAGE_KEY = '__TODO_APP__'
 const DATA = LOCAL_STORAGE_KEY + 'DATA'
