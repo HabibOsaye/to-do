@@ -4,7 +4,7 @@
 	"main": "main.js",
 	"scripts": {
 		"start": "npm run dump & parcel serve index.html -p 5024",
-		"build": "parcel build index.html --no-source-maps",
+		"build": "npm run dump & parcel build index.html --no-source-maps --no-cache",
 		"dump": "rm -rf .cache .parcel-cache dist & clear"
 	},
 	"author": "Habib T Osaye",
