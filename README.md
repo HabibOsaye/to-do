@@ -2,6 +2,10 @@
 
 This is a practice project done with JavaScript, CSS (Sass) and [Parcel](https://parcel.org). This was a shot at better understanding JS DOM manipulation, importing and use of npm packages ([date-fns](https://github.com/date-fns/date-fns) and [uuid](https://github.com/uuidjs/uuid)) and also making use of a web application bundler to transcompile code.
 
+## Showcase
+
+View deployed site [Here](https://to-do-habib-osaye.netlify.app/)
+
 ![to-do screenshot](showcase/to-do_1.png)
 ![to-do screenshot](showcase/to-do_2.png)
 
